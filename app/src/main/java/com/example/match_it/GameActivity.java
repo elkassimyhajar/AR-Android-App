@@ -5,11 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.ar.core.Anchor;
+import com.google.ar.core.Pose;
 import com.google.ar.sceneform.AnchorNode;
 import com.google.ar.sceneform.math.Vector3;
 import com.google.ar.sceneform.rendering.Color;
@@ -19,6 +22,7 @@ import com.google.ar.sceneform.rendering.ShapeFactory;
 import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 public class GameActivity extends AppCompatActivity {
@@ -32,6 +36,11 @@ public class GameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+
+        SharedPreferences preferences = getApplicationContext().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
+        String selectedTopic = preferences.getString("topic", "NOT FOUND");
+        Log.i("TOPIC", selectedTopic);
+
         if(checkSystemSupport(this)) {
             // ArFragment is linked up with its respective id used in the activity_main.xml
             arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
@@ -42,10 +51,17 @@ public class GameActivity extends AppCompatActivity {
                             material -> greenCubeRenderable = ShapeFactory.makeCube(new Vector3(0.2f, 0.2f, 0.2f), new Vector3(0.0f, 0.15f, 0.0f), material)
                     );
 
+
             arFragment.setOnTapArPlaneListener((hitResult, plane, motionEvent) -> {
                 //clickNo++;
                 //if (clickNo == 1) {
                 Anchor anchor = hitResult.createAnchor();
+                Pose pose = anchor.getPose();
+
+                Log.i("X ", Arrays.toString(pose.getXAxis()));
+                Log.i("Y ", Arrays.toString(pose.getYAxis()));
+                Log.i("Z ", Arrays.toString(pose.getZAxis()));
+
                 addModel(anchor, greenCubeRenderable);
                     /*ModelRenderable.builder()
                             .setSource(this, R.raw.tiger)

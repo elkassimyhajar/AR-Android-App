@@ -48,21 +48,10 @@ public class HomeActivity extends AppCompatActivity {
         bounce_anim = AnimationUtils.loadAnimation(getApplicationContext(),
                 R.anim.bounce);
         this.playButton.startAnimation(bounce_anim);
-        this.playButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mediaPlayer = MediaPlayer.create(HomeActivity.this, R.raw.playbuttonclick);
-                mediaPlayer.start();
-                startActivity(new Intent(HomeActivity.this, TopicsActivity.class));
-                mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                    @Override
-                    public void onCompletion(MediaPlayer mp) {
-                        mediaPlayer = MediaPlayer.create(HomeActivity.this, R.raw.speech);
-                        mediaPlayer.start();
-                    }
-                });
-
-            }
+        this.playButton.setOnClickListener(v -> {
+            mediaPlayer = MediaPlayer.create(HomeActivity.this, R.raw.playbuttonclick);
+            mediaPlayer.start();
+            startActivity(new Intent(HomeActivity.this, TopicsActivity.class));
         });
     }
 
