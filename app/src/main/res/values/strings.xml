@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Match it!</string>
-    <string name="game_name">Match it!</string>
+    <string name="game_name">Match it</string>
     <string name="play">Play</string>
     <string name="go">Go</string>
     <string name="choose_a_topic">Choose a topic</string>

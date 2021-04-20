@@ -22,19 +22,15 @@
             android:name="com.google.ar.core"
             android:value="required" />
 
-        <activity android:name=".Ar">
-        </activity>
-
-        <activity android:name=".HomeActivity">
+        <activity android:name=".TopicsActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".TopicsActivity">
-
-        </activity>
+        <activity android:name=".LoadingActivity"/>
         <activity android:name=".GameActivity"/>
+        <activity android:name=".Ar"/>
+
     </application>
 </manifest>
