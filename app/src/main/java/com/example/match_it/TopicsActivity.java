@@ -23,13 +23,13 @@ import java.util.List;
 
 public class TopicsActivity extends AppCompatActivity {
 
-    private ViewPager viewPager;
     private Button goButton;
     private RelativeLayout relativeLayout;
     private ImageView helpImage;
 
     private Adapter adapter;
     private List<Etablissement> etablissements;
+
     private Integer[] colors = null;
     private final ArgbEvaluator argbEvaluator = new ArgbEvaluator();
 
@@ -84,8 +84,8 @@ public class TopicsActivity extends AppCompatActivity {
 
         this.relativeLayout = findViewById(R.id.relativeLayout);
 
-        this.viewPager = findViewById(R.id.viewPager);
-        this.viewPager.setAdapter(adapter);
+        ViewPager viewPager = findViewById(R.id.viewPager);
+        viewPager.setAdapter(adapter);
 
         ViewPager.OnPageChangeListener pageChangeListener = new ViewPager.OnPageChangeListener(){
             boolean firstTime = true;
@@ -134,6 +134,7 @@ public class TopicsActivity extends AppCompatActivity {
                 goButton.setOnClickListener(
                         v -> {
                             //play click sound effect
+                            mediaPlayer.release();
                             mediaPlayer = MediaPlayer.create(TopicsActivity.this, R.raw.playbuttonclick);
                             mediaPlayer.start();
                             //save the selected topic as a shared preference
@@ -143,7 +144,7 @@ public class TopicsActivity extends AppCompatActivity {
                             Log.i("topic",etablissements.get(position).getName() );
                             editor.apply();
                             //start next activity
-                            startActivity(new Intent(TopicsActivity.this, GameActivity.class));
+                            startActivity(new Intent(TopicsActivity.this, LoadingActivity.class));
                         }
                 );
             }
@@ -152,6 +153,6 @@ public class TopicsActivity extends AppCompatActivity {
             }
         };
         pageChangeListener.onPageSelected(0);
-        this.viewPager.addOnPageChangeListener(pageChangeListener);
+        viewPager.addOnPageChangeListener(pageChangeListener);
     }
 }
