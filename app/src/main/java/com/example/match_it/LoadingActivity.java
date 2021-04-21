@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -19,15 +21,17 @@ public class LoadingActivity extends AppCompatActivity {
     private MediaPlayer mediaPlayer;
     private Animation bounce_anim;*/
 
+    Thread thread;
+
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading);
 
-        //get the selected topic from SharedPreferences
-        SharedPreferences preferences = getApplicationContext().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
-        String selectedTopic = preferences.getString("topic", "NOT FOUND");
+        //get the selected topic
+        Bundle bundle = getIntent().getExtras();
+        String selectedTopic = bundle.getString("topic");
 
         //personalize the bg of the layout
         this.layout = findViewById(R.id.loadingRelativeLayout);
@@ -39,8 +43,13 @@ public class LoadingActivity extends AppCompatActivity {
         }
 
         this.textView = findViewById(R.id.gameName);
+
+        Intent intent = new Intent(LoadingActivity.this, GameActivity.class);
+        intent.putExtra("topic", selectedTopic);
+
         // show game name letter by letter
-        Thread thread = new Thread() {
+        // then, start GameActivity
+        thread = new Thread() {
             int i;
             final String gameName = getString(R.string.game_name) + " ...";
             @Override
@@ -51,13 +60,15 @@ public class LoadingActivity extends AppCompatActivity {
                         runOnUiThread(() -> textView.setText(gameName.substring(0, i)));
                     }
                     Thread.sleep(500);
-                    runOnUiThread(() -> startActivity(new Intent(LoadingActivity.this, GameActivity.class)));
+                    runOnUiThread(() -> startActivity(intent));
+                    finish();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
         };
         thread.start();
+    }
 
         /*this.playButton = findViewById(R.id.playButton);
         //animate play button
@@ -69,11 +80,11 @@ public class LoadingActivity extends AppCompatActivity {
             mediaPlayer.start();
             startActivity(new Intent(LoadingActivity.this, TopicsActivity.class));
         });*/
-    }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        //this.playButton.startAnimation(bounce_anim);
+    protected void onPause() {
+        super.onPause();
+        thread.interrupt();
+        finish();
     }
 }
