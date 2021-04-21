@@ -4,6 +4,7 @@ import android.animation.ArgbEvaluator;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.DrawableContainer;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
@@ -61,6 +62,10 @@ public class TopicsActivity extends AppCompatActivity {
                 getResources().getColor(R.color.topic_color6, getTheme())
         };
 
+        this.goButton = findViewById(R.id.goButton);
+
+        this.relativeLayout = findViewById(R.id.relativeLayout);
+
         //animate helpImage and remove it from the view when the animation ends
         this.helpImage = findViewById(R.id.helpImage);
         Animation anim = AnimationUtils.loadAnimation(getApplicationContext(),
@@ -73,16 +78,15 @@ public class TopicsActivity extends AppCompatActivity {
             }
             @Override
             public void onAnimationEnd(Animation animation) {
-                ((ViewManager) helpImage.getParent()).removeView(helpImage);
+                relativeLayout.postDelayed(() -> ((ViewManager) helpImage.getParent()).removeView(helpImage), 500);
+                //((ViewManager) helpImage.getParent()).removeView(helpImage);
             }
             @Override
             public void onAnimationRepeat(Animation animation) {
             }
         });
 
-        this.goButton = findViewById(R.id.goButton);
 
-        this.relativeLayout = findViewById(R.id.relativeLayout);
 
         ViewPager viewPager = findViewById(R.id.viewPager);
         viewPager.setAdapter(adapter);
@@ -137,14 +141,12 @@ public class TopicsActivity extends AppCompatActivity {
                             mediaPlayer.release();
                             mediaPlayer = MediaPlayer.create(TopicsActivity.this, R.raw.playbuttonclick);
                             mediaPlayer.start();
-                            //save the selected topic as a shared preference
-                            preferences = getApplicationContext().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
-                            SharedPreferences.Editor editor = preferences.edit();
-                            editor.putString("topic", etablissements.get(position).getName());
-                            Log.i("topic",etablissements.get(position).getName() );
-                            editor.apply();
-                            //start next activity
-                            startActivity(new Intent(TopicsActivity.this, LoadingActivity.class));
+
+                            //pass the name of the selected topic to the next activity
+                            Intent intent = new Intent(TopicsActivity.this, LoadingActivity.class);
+                            intent.putExtra("topic", etablissements.get(position).getName());
+                            //start the next activity
+                            startActivity(intent);
                         }
                 );
             }
