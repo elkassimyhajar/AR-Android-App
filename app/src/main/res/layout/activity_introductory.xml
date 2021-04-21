@@ -1,53 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Introductory">
-
-    <ImageView
-        android:id="@+id/bg"
-        android:layout_width="wrap_content"
-        android:layout_height="900dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/bg_splash" />
-
-
-    <ImageView
-        android:id="@+id/logo"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:src="@drawable/logo_search_colors"
-        app:layout_constraintVertical_bias=".1"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="150dp"
-        android:layout_centerHorizontal="true"/>
-
-    <TextView
-        android:id="@+id/app_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/logo"
-        android:layout_marginTop="10dp"
-        android:layout_centerHorizontal="true"
-        android:text="Hidden Object Game"
-        android:textSize="30sp"
-        app:fontFamily="cursive"
-        android:textColor="@color/design_default_color_primary_variant" />
-
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/lottie"
-        android:layout_width="wrap_content"
-        android:layout_height="200dp"
-        android:layout_below="@+id/app_name"
-        android:layout_marginTop="10dp"
-        android:layout_centerHorizontal="true"
-        app:lottie_autoPlay="true"
-        app:lottie_rawRes="@raw/quad_cube_bg_white" />
+    tools:context=".Introductory"
+    android:background="@drawable/bg_game">
 
 
 </RelativeLayout>

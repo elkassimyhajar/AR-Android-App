@@ -10,6 +10,10 @@
     <color name="white">#FFFFFFFF</color>
     <color name="yellow">#fec832</color>
     <color name="green">#008b7d</color>
+    <color name="green_light">#B6DDD9</color>
     <color name="orange">#ff6c2e</color>
     <color name="blue">#008cc0</color>
+    <color name="red_dark">#8e0d0d</color>
+    <color name="red_rose">#eb2626</color>
+    <color name="rose">#f59191</color>
 </resources>

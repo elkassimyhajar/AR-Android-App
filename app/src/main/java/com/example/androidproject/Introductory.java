@@ -2,36 +2,40 @@ package com.example.androidproject;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.airbnb.lottie.LottieAnimationView;
+
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Introductory extends AppCompatActivity {
 
-    ImageView logo, splashImg;
-    TextView appName;
-    LottieAnimationView lottieAnimationView;
+    private static int SPLASH_TIME_OUT = 4000;
 
-    private static int SPLASH_TIME_OUT = 5000;
+        Button btStart;
+        ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_introductory);
 
-        logo = findViewById(R.id.logo);
-        appName = findViewById(R.id.app_name);
-        splashImg = findViewById(R.id.bg);
-        lottieAnimationView = findViewById(R.id.lottie);
-
-        splashImg.animate().translationY(-1600).setDuration(2000).setStartDelay(4000);
-        logo.animate().translationY(1400).setDuration(2000).setStartDelay(4000);
-        appName.animate().translationY(1400).setDuration(2000).setStartDelay(4000);
-        lottieAnimationView.animate().translationY(1400).setDuration(2000).setStartDelay(4000);
+        progressDialog = new ProgressDialog(Introductory.this);
+        progressDialog.show();
+        progressDialog.setContentView(R.layout.progress_dialog);
+        progressDialog.getWindow().setBackgroundDrawableResource(
+                android.R.color.transparent
+        );
 
         //splash screen
         new Handler().postDelayed(new Runnable() {
@@ -43,5 +47,10 @@ public class Introductory extends AppCompatActivity {
             }
         }, SPLASH_TIME_OUT);
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        progressDialog.dismiss();
     }
 }

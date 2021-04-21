@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="240dp"
+    android:layout_gravity="center"
+    android:background="@drawable/bg_popup">
+
+    <TextView
+        android:id="@+id/principe1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Look for a set of hidden objects indicate by name each time in a different location."
+        android:textSize="20sp"
+        android:justificationMode="inter_word"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="22dp"
+        android:layout_marginRight="22dp"/>
+
+    <TextView
+        android:id="@+id/principe2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="You win when you find all the requested hidden objects within the specified time."
+        android:textSize="20sp"
+        android:justificationMode="inter_word"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/principe1"
+        android:layout_marginLeft="22dp"
+        android:layout_marginRight="22dp"
+        android:layout_marginTop="10dp"/>
+
+
+</RelativeLayout>
