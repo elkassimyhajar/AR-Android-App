@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyClassroomProject">
-        <activity android:name=".veggies"></activity>
+        <activity android:name=".IntermediateDashboard"></activity>
+        <activity android:name=".veggies" />
         <activity android:name=".fruits" />
         <activity android:name=".shapes" />
         <activity android:name=".animals" />

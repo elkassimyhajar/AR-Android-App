@@ -1,6 +1,7 @@
 package com.example.myclassroomproject;
 
 import android.content.Intent;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -31,9 +32,10 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
 
     @Override
     public void onClick(View v) {
-        Intent i;
-
-        switch (v.getId()){
+        Intent i = new Intent(this, IntermediateDashboard.class);
+        i.putExtra("theme", v.getTag().toString());
+        startActivity(i);
+        /*switch (v.getId()){
             case R.id.ialphabet:
                 i = new Intent(this, alphabet.class);
                 startActivity(i);
@@ -58,6 +60,6 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
                 i = new Intent(this, numbers.class);
                 startActivity(i);
                 break;
-        }
+        }*/
     }
 }
