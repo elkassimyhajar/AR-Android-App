@@ -42,7 +42,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
                     <ImageView
-                        android:src="@drawable/cat"
+                        android:src="@drawable/duck"
                         android:layout_width="280dp"
                         android:layout_height="280dp"/>
 
@@ -68,7 +68,7 @@
                         android:layout_marginTop="12dp"
                         android:textColor="#616161"
                         android:textSize="70sp"
-                        android:text="Cat"
+                        android:text="Duck"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                 </LinearLayout>
@@ -106,6 +106,7 @@
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
+                android:id="@+id/aricon"
                 android:layout_width="65dp"
                 android:layout_height="65dp"
                 android:layout_columnWeight="1"

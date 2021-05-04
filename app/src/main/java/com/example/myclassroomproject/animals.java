@@ -1,5 +1,6 @@
 package com.example.myclassroomproject;
 
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,7 +9,7 @@ import android.view.View;
 
 public class animals extends AppCompatActivity implements View.OnClickListener {
 
-    public CardView audio;
+    public CardView audio, aricon;
     MediaPlayer player;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,14 +17,26 @@ public class animals extends AppCompatActivity implements View.OnClickListener {
         setContentView(R.layout.activity_animals);
 
         audio = (CardView) findViewById(R.id.audio);
+        aricon = (CardView) findViewById(R.id.aricon);
+
         audio.setOnClickListener(this);
+        aricon.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
-        if (player == null) {
-            player = MediaPlayer.create(this, R.raw.cat);
+        switch (v.getId()){
+            case R.id.audio:
+                if (player == null) {
+                    player = MediaPlayer.create(this, R.raw.one);
+                }
+                player.start();
+                break;
+            case R.id.aricon:
+                Intent i = new Intent(this, ArActivity.class);
+                i.putExtra("object", "duck");
+                startActivity(i);
+                break;
         }
-        player.start();
     }
 }

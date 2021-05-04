@@ -85,7 +85,7 @@ public class IntermediateDashboard extends AppCompatActivity implements View.OnC
                     i = new Intent(this, veggies.class);
                     startActivity(i);
                 }else if (theme.equals("shapes")){
-                    i = new Intent(this, veggies.class);
+                    i = new Intent(this, shapes.class);
                     startActivity(i);
                 }else if (theme.equals("animals")){
                     i = new Intent(this, animals.class);
