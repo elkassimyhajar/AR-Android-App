@@ -29,9 +29,9 @@
             "name" : "mat_hexagone",
             "pbrMetallicRoughness" : {
                 "baseColorFactor" : [
-                    0.8000000715255737,
-                    0.6725893616676331,
-                    0.07157201319932938,
+                    1,
+                    1,
+                    0,
                     1
                 ],
                 "metallicFactor" : 0,
