@@ -15,18 +15,13 @@
     "nodes" : [
         {
             "mesh" : 0,
-            "name" : "Hexagone",
-            "scale" : [
-                0.10000000149011612,
-                0.10000000149011612,
-                0.10000000149011612
-            ]
+            "name" : "Hexagon"
         }
     ],
     "materials" : [
         {
             "doubleSided" : true,
-            "name" : "mat_hexagone",
+            "name" : "mat_hexagon",
             "pbrMetallicRoughness" : {
                 "baseColorFactor" : [
                     1,
@@ -41,7 +36,7 @@
     ],
     "meshes" : [
         {
-            "name" : "Hexagone",
+            "name" : "Hexagon",
             "primitives" : [
                 {
                     "attributes" : {
@@ -116,7 +111,7 @@
     "buffers" : [
         {
             "byteLength" : 1272,
-            "uri" : "hexagone.bin"
+            "uri" : "hexagon.bin"
         }
     ]
 }
