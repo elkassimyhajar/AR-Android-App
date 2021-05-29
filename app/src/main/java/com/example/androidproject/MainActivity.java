@@ -26,9 +26,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mp = MediaPlayer.create(getApplicationContext(), R.raw.music);
-        mp.setLooping(true);
-        mp.start();
+//        mp = MediaPlayer.create(getApplicationContext(), R.raw.music);
+//        mp.setLooping(true);
+//        mp.start();
 
         btn_play = (Button) findViewById(R.id.btn_play);
 

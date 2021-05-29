@@ -40,6 +40,7 @@
 
         <!-- row 1 -->
         <androidx.cardview.widget.CardView
+            android:id="@+id/c1"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_columnWeight="1"
@@ -69,7 +70,6 @@
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="25sp"
-                    android:textStyle="bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
@@ -80,6 +80,7 @@
         <!-- row 2 -->
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/c2"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_columnWeight="1"
@@ -109,7 +110,6 @@
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="25sp"
-                    android:textStyle="bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
@@ -120,6 +120,7 @@
         <!-- row 3 -->
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/c3"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_columnWeight="1"
@@ -149,7 +150,6 @@
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="25sp"
-                    android:textStyle="bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 

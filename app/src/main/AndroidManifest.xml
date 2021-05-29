@@ -9,6 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidProject">
+        <activity android:name=".ThirdLevelActivity"></activity>
+        <activity android:name=".SecondLevelActivity" />
+        <activity android:name=".FirstLevelActivity" />
         <activity android:name=".Introductory">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -16,8 +19,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"></activity>
-        <activity android:name=".LevelsActivity"></activity>
+        <activity android:name=".MainActivity" />
+        <activity android:name=".LevelsActivity" />
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>
