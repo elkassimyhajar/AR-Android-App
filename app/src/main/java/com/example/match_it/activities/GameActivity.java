@@ -79,7 +79,7 @@ public class GameActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //checkSystemSupport(this);
+        checkSystemSupport(this);
 
         if(!checkNetworkAvailability()) {
             Toast toast = Toast.makeText(this, "Check your internet connexion and try again.", Toast.LENGTH_LONG);
@@ -100,13 +100,17 @@ public class GameActivity extends AppCompatActivity {
 
         // Init
         init();
-        Arrays.fill(board_cells_status, 0);
         // Load 3d assets
         loadBoardModels();
         loadObjectsModels();
         // Set a tap listener on the AR fragment to determine on which plane models will be rendered
         arFragment.setOnTapArPlaneListener((hitResult, plane, motionEvent) -> {
-            if(objectsLoaded && boardLoaded && !hasPlacedModels && arSceneView.getSession()!=null) {
+            if(!objectsLoaded || !boardLoaded) {
+                Toast toast = Toast.makeText(this, "Loading assets...", Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toast.show();
+            }
+            else if(!hasPlacedModels && arSceneView.getSession()!=null) {
                 // Adjust the hit pose
                 Pose hitPose = hitResult.getHitPose();
                 float[] translation = hitPose.getTranslation();
@@ -657,6 +661,7 @@ public class GameActivity extends AppCompatActivity {
                         break;
                 }
         }
+        Arrays.fill(board_cells_status, 0);
     }
 
     private boolean checkNetworkAvailability() {
