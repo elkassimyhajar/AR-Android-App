@@ -15,28 +15,33 @@
     "nodes" : [
         {
             "mesh" : 0,
-            "name" : "Cylinder"
+            "name" : "Rectangle",
+            "scale" : [
+                0.550000011920929,
+                0.25,
+                0.949999988079071
+            ]
         }
     ],
     "materials" : [
         {
             "doubleSided" : true,
-            "name" : "mat_cylinder",
+            "name" : "black_mat",
             "pbrMetallicRoughness" : {
                 "baseColorFactor" : [
                     0,
                     0,
-                    1,
+                    0,
                     1
                 ],
                 "metallicFactor" : 0,
-                "roughnessFactor" : 0.5
+                "roughnessFactor" : 0.4000000059604645
             }
         }
     ],
     "meshes" : [
         {
-            "name" : "Cylinder.003",
+            "name" : "Cube.004",
             "primitives" : [
                 {
                     "attributes" : {
@@ -54,15 +59,15 @@
         {
             "bufferView" : 0,
             "componentType" : 5126,
-            "count" : 300,
+            "count" : 24,
             "max" : [
-                0.099802665412426,
-                0.02499999850988388,
+                0.09999999403953552,
+                0.09999999403953552,
                 0.09999999403953552
             ],
             "min" : [
-                -0.09980267286300659,
-                -0.02499999850988388,
+                -0.09999999403953552,
+                -0.09999999403953552,
                 -0.09999999403953552
             ],
             "type" : "VEC3"
@@ -70,48 +75,48 @@
         {
             "bufferView" : 1,
             "componentType" : 5126,
-            "count" : 300,
+            "count" : 24,
             "type" : "VEC3"
         },
         {
             "bufferView" : 2,
             "componentType" : 5126,
-            "count" : 300,
+            "count" : 24,
             "type" : "VEC2"
         },
         {
             "bufferView" : 3,
             "componentType" : 5123,
-            "count" : 588,
+            "count" : 36,
             "type" : "SCALAR"
         }
     ],
     "bufferViews" : [
         {
             "buffer" : 0,
-            "byteLength" : 3600,
+            "byteLength" : 288,
             "byteOffset" : 0
         },
         {
             "buffer" : 0,
-            "byteLength" : 3600,
-            "byteOffset" : 3600
+            "byteLength" : 288,
+            "byteOffset" : 288
         },
         {
             "buffer" : 0,
-            "byteLength" : 2400,
-            "byteOffset" : 7200
+            "byteLength" : 192,
+            "byteOffset" : 576
         },
         {
             "buffer" : 0,
-            "byteLength" : 1176,
-            "byteOffset" : 9600
+            "byteLength" : 72,
+            "byteOffset" : 768
         }
     ],
     "buffers" : [
         {
-            "byteLength" : 10776,
-            "uri" : "cylinder.bin"
+            "byteLength" : 840,
+            "uri" : "rectangle_1_black.bin"
         }
     ]
 }
