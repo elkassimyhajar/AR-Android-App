@@ -1,17 +1,15 @@
-package com.example.match_it;
+package com.example.match_it.activities;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.match_it.R;
 
 public class LoadingActivity extends AppCompatActivity {
 
@@ -29,11 +27,11 @@ public class LoadingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading);
 
-        //get the selected topic
+        // Get the selected topic
         Bundle bundle = getIntent().getExtras();
         String selectedTopic = bundle.getString("topic");
 
-        //personalize the bg of the layout
+        // Personalize the bg of the layout
         this.layout = findViewById(R.id.loadingRelativeLayout);
         if (selectedTopic.equals("Alphabets")) {
             layout.setBackground(getDrawable(R.drawable.letters_bg));
@@ -44,7 +42,7 @@ public class LoadingActivity extends AppCompatActivity {
 
         this.textView = findViewById(R.id.gameName);
 
-        Intent intent = new Intent(LoadingActivity.this, GameActivity.class);
+        Intent intent = new Intent(LoadingActivity.this, LevelsActivity.class);
         intent.putExtra("topic", selectedTopic);
 
         // show game name letter by letter
@@ -56,10 +54,10 @@ public class LoadingActivity extends AppCompatActivity {
             public void run() {
                 try {
                     for (i = 0; i < gameName.length(); i++) {
-                        Thread.sleep(500);
+                        Thread.sleep(250);
                         runOnUiThread(() -> textView.setText(gameName.substring(0, i)));
                     }
-                    Thread.sleep(500);
+                    Thread.sleep(250);
                     runOnUiThread(() -> startActivity(intent));
                     finish();
                 } catch (InterruptedException e) {
