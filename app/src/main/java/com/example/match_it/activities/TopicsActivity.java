@@ -1,13 +1,10 @@
-package com.example.match_it;
+package com.example.match_it.activities;
 
 import android.animation.ArgbEvaluator;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.drawable.DrawableContainer;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.ViewManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -19,6 +16,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.match_it.utils.TopicEstablishment;
+import com.example.match_it.R;
+import com.example.match_it.utils.TopicsAdapter;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,8 +29,8 @@ public class TopicsActivity extends AppCompatActivity {
     private RelativeLayout relativeLayout;
     private ImageView helpImage;
 
-    private Adapter adapter;
-    private List<Etablissement> etablissements;
+    private TopicsAdapter topicsAdapter;
+    private List<TopicEstablishment> topicEstablishments;
 
     private Integer[] colors = null;
     private final ArgbEvaluator argbEvaluator = new ArgbEvaluator();
@@ -43,15 +44,15 @@ public class TopicsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_topics);
 
-        etablissements = new ArrayList<>();
-        etablissements.add(new Etablissement(R.drawable.abc, "Alphabets", R.raw.alphabets));
-        etablissements.add(new Etablissement(R.drawable.numbers, "Numbers", R.raw.numbers));
-        etablissements.add(new Etablissement(R.drawable.shapes, "Shapes", R.raw.shapes));
-        etablissements.add(new Etablissement(R.drawable.animals, "Animals", R.raw.animals));
-        etablissements.add(new Etablissement(R.drawable.fruits, "Fruits", R.raw.fruits));
-        etablissements.add(new Etablissement(R.drawable.vegetables, "Vegetables", R.raw.vegetables));
+        topicEstablishments = new ArrayList<>();
+        topicEstablishments.add(new TopicEstablishment(R.drawable.abc, "Alphabets", R.raw.alphabets));
+        topicEstablishments.add(new TopicEstablishment(R.drawable.numbers, "Numbers", R.raw.numbers));
+        topicEstablishments.add(new TopicEstablishment(R.drawable.shapes, "Shapes", R.raw.shapes));
+        topicEstablishments.add(new TopicEstablishment(R.drawable.animals, "Animals", R.raw.animals));
+        topicEstablishments.add(new TopicEstablishment(R.drawable.fruits, "Fruits", R.raw.fruits));
+        topicEstablishments.add(new TopicEstablishment(R.drawable.vegetables, "Vegetables", R.raw.vegetables));
 
-        adapter = new Adapter(etablissements, this);
+        topicsAdapter = new TopicsAdapter(topicEstablishments, this);
 
         this.colors = new Integer[]{
                 getResources().getColor(R.color.topic_color1, getTheme()),
@@ -89,14 +90,14 @@ public class TopicsActivity extends AppCompatActivity {
 
 
         ViewPager viewPager = findViewById(R.id.viewPager);
-        viewPager.setAdapter(adapter);
+        viewPager.setAdapter(topicsAdapter);
 
         ViewPager.OnPageChangeListener pageChangeListener = new ViewPager.OnPageChangeListener(){
             boolean firstTime = true;
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 //change the bg color of the relativeLayout
-                if (position < (adapter.getCount() -1) && position < (colors.length - 1)) {
+                if (position < (topicsAdapter.getCount() -1) && position < (colors.length - 1)) {
                     relativeLayout.setBackgroundColor(
                             (Integer) argbEvaluator.evaluate(
                                     positionOffset,
@@ -119,19 +120,19 @@ public class TopicsActivity extends AppCompatActivity {
                         mediaPlayer.start();
                         //play the name of the first topic once the help message ends
                         mediaPlayer.setOnCompletionListener(mp -> {
-                            mediaPlayer = MediaPlayer.create(TopicsActivity.this, etablissements.get(position).getSound());
+                            mediaPlayer = MediaPlayer.create(TopicsActivity.this, topicEstablishments.get(position).getSound());
                             mediaPlayer.start();
                         });
                     }
                     else {
                         //play the name of the first topic
-                        mediaPlayer = MediaPlayer.create(TopicsActivity.this, etablissements.get(position).getSound());
+                        mediaPlayer = MediaPlayer.create(TopicsActivity.this, topicEstablishments.get(position).getSound());
                         mediaPlayer.start();
                     }
                 } else {
                     //play the sound of the topic name
                     mediaPlayer.release();
-                    mediaPlayer = MediaPlayer.create(TopicsActivity.this, etablissements.get(position).getSound());
+                    mediaPlayer = MediaPlayer.create(TopicsActivity.this, topicEstablishments.get(position).getSound());
                     mediaPlayer.start();
                 }
 
@@ -144,7 +145,7 @@ public class TopicsActivity extends AppCompatActivity {
 
                             //pass the name of the selected topic to the next activity
                             Intent intent = new Intent(TopicsActivity.this, LoadingActivity.class);
-                            intent.putExtra("topic", etablissements.get(position).getName());
+                            intent.putExtra("topic", topicEstablishments.get(position).getName());
                             //start the next activity
                             startActivity(intent);
                         }

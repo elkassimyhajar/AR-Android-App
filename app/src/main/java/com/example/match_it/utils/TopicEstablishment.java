@@ -1,11 +1,11 @@
-package com.example.match_it;
+package com.example.match_it.utils;
 
-public class Etablissement {
+public class TopicEstablishment {
     private String name;
     private int image;
     private int sound;
 
-    public Etablissement(int image, String name, int sound) {
+    public TopicEstablishment(int image, String name, int sound) {
         this.image = image;
         this.name = name;
         this.sound = sound;
