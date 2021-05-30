@@ -1,6 +1,7 @@
 package com.example.match_it.activities;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -23,7 +24,7 @@ import com.example.match_it.utils.LevelsAdapter;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class LevelsActivity extends AppCompatActivity {
+public class LevelsActivity extends Activity {
 
     private static boolean mustFinish = false;
 
