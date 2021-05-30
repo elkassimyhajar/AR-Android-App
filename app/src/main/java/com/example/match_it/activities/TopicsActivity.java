@@ -37,8 +37,6 @@ public class TopicsActivity extends AppCompatActivity {
 
     private MediaPlayer mediaPlayer;
 
-    private SharedPreferences preferences;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -142,12 +140,13 @@ public class TopicsActivity extends AppCompatActivity {
                             mediaPlayer.release();
                             mediaPlayer = MediaPlayer.create(TopicsActivity.this, R.raw.playbuttonclick);
                             mediaPlayer.start();
-
-                            //pass the name of the selected topic to the next activity
-                            Intent intent = new Intent(TopicsActivity.this, LoadingActivity.class);
-                            intent.putExtra("topic", topicEstablishments.get(position).getName());
-                            //start the next activity
-                            startActivity(intent);
+                            mediaPlayer.setOnCompletionListener(mp -> {
+                                //pass the name of the selected topic to the next activity
+                                Intent intent = new Intent(TopicsActivity.this, LoadingActivity.class);
+                                intent.putExtra("topic", topicEstablishments.get(position).getName());
+                                //start the next activity
+                                startActivity(intent);
+                            });
                         }
                 );
             }
@@ -157,5 +156,26 @@ public class TopicsActivity extends AppCompatActivity {
         };
         pageChangeListener.onPageSelected(0);
         viewPager.addOnPageChangeListener(pageChangeListener);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mediaPlayer.release();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mediaPlayer != null)
+            mediaPlayer.release();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mediaPlayer.release();
+        if (mediaPlayer != null)
+            mediaPlayer.release();
     }
 }
