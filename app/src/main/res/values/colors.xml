@@ -8,7 +8,6 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="orange">#F06F3F</color>
 
     <color name="topic_color1">#FFBFB9</color>
     <color name="topic_color2">#AE7FDA</color>
@@ -16,5 +15,10 @@
     <color name="topic_color4">#FEE133</color>
     <color name="topic_color5">#FE8E01</color>
     <color name="topic_color6">#65B243</color>
+    <color name="light_grey">#C7C0C0</color>
+    <color name="yellow">#FFEB3B</color>
+    <color name="red">#EF5350</color>
+    <color name="orange">#FFAA43</color>
+    <color name="brown">#AA510D</color>
 
 </resources>

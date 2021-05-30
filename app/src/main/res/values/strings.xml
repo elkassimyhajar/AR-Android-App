@@ -5,4 +5,14 @@
     <string name="go">Go</string>
     <string name="choose_a_topic">Choose a topic</string>
     <string name="plane_finding">Searching for surfaces</string>
+    <string name="pause">Pause</string>
+    <string name="good_job">Good JOB</string>
+    <string name="next_level">NEXT LEVEL</string>
+    <string name="quit_game">QUIT GAME</string>
+    <string name="try_again">TRY AGAIN</string>
+    <string name="levels_menu">LEVELS MENU</string>
+    <string name="continue_game">CONTINUE</string>
+    <string name="restart">RESTART</string>
+    <string name="help">HELP</string>
+    <string name="help_txt">Drag each object to the game board. Then tap on it to check if you have placed it in the right place or not.</string>
 </resources>
