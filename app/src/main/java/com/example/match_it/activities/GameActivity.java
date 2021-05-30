@@ -63,6 +63,12 @@ public class GameActivity extends AppCompatActivity {
     private ModelRenderable[] objectsModels;
     private MediaPlayer mediaPlayer;
 
+    Thread timerThread;
+
+    //
+    private boolean objectsLoaded;
+    //
+    private boolean boardLoaded;
     // True once models have been placed
     private boolean hasPlacedModels = false;
     // True when the game is pause
@@ -73,8 +79,7 @@ public class GameActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        checkSystemSupport(this);
+        //checkSystemSupport(this);
 
         if(!checkNetworkAvailability()) {
             Toast toast = Toast.makeText(this, "Check your internet connexion and try again.", Toast.LENGTH_LONG);
@@ -83,34 +88,34 @@ public class GameActivity extends AppCompatActivity {
             finish();
         }
 
-        init();
-
         setContentView(R.layout.activity_game);
 
         ArFragment arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.arFragment);
         if(arFragment == null)
             return;
 
-        arSceneView = arFragment.getArSceneView();
+        while (arSceneView == null)
+            arSceneView = arFragment.getArSceneView();
 
+
+        // Init
+        init();
+        Arrays.fill(board_cells_status, 0);
         // Load 3d assets
         loadBoardModels();
         loadObjectsModels();
-
-        // Init
-        Arrays.fill(board_cells_status, 0);
-
         // Set a tap listener on the AR fragment to determine on which plane models will be rendered
         arFragment.setOnTapArPlaneListener((hitResult, plane, motionEvent) -> {
-            if(!hasPlacedModels && arSceneView.getSession()!=null) {
-                // Play sound effect
-                mediaPlayer = MediaPlayer.create(this, R.raw.playbuttonclick);
-                mediaPlayer.start();
+            if(objectsLoaded && boardLoaded && !hasPlacedModels && arSceneView.getSession()!=null) {
+                // Adjust the hit pose
                 Pose hitPose = hitResult.getHitPose();
                 float[] translation = hitPose.getTranslation();
                 float[] rotation = new float[4];
                 rotation[0] = 0.0f; rotation[1] = 0.0f; rotation[2] = 0.0f; rotation[3] = 0.0f;
                 Pose pose = new Pose(translation, rotation);
+                // Play sound effect
+                mediaPlayer = MediaPlayer.create(this, R.raw.playbuttonclick);
+                mediaPlayer.start();
                 // Render the game board
                 boardRenderer = new BoardRenderer(arSceneView, boardModels, pose);
                 boardRenderer.render();
@@ -123,7 +128,11 @@ public class GameActivity extends AppCompatActivity {
                 arSceneView.getSession().getConfig().setPlaneFindingMode(Config.PlaneFindingMode.DISABLED);
                 //
                 hasPlacedModels = true;
-                //
+                // Set an update listener on the AR Scene
+                arSceneView
+                        .getScene()
+                        .addOnUpdateListener(this::onUpdateFrame);
+                // Start the timer
                 startTimer();
                 // Set a tap listener on every object
                 for(int i = 0; i < objectsRenderer.getObjectsNodes().length; i++) {
@@ -134,10 +143,6 @@ public class GameActivity extends AppCompatActivity {
                 }
             }
         });
-        // Set an update listener on the AR Scene
-        arSceneView
-                .getScene()
-                .addOnUpdateListener(this::onUpdateFrame);
         // Set a click listener on pause button
         pauseButton = (ImageButton) findViewById(R.id.PauseButton);
         pauseButton.setOnClickListener(
@@ -176,6 +181,7 @@ public class GameActivity extends AppCompatActivity {
                     intent.putExtra("topic", selectedTopic);
                     intent.putExtra("level", level);
                     startActivity(intent);
+                    pauseDialog.dismiss();
                     finish();
                 }
         );
@@ -185,6 +191,7 @@ public class GameActivity extends AppCompatActivity {
         quit.setOnClickListener(
                 v -> {
                     LevelsActivity.setMustFinish(true);
+                    pauseDialog.dismiss();
                     finish();
                 }
         );
@@ -193,17 +200,18 @@ public class GameActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        /*if (arSceneView == null) {
+        if (arSceneView == null) {
             return;
         }
         try {
             arSceneView.resume();
+            paused = false;
         } catch (CameraNotAvailableException ex) {
             Toast toast = Toast.makeText(this, "Unable to get camera", Toast.LENGTH_LONG);
             toast.setGravity(Gravity.BOTTOM, 0, 0);
             toast.show();
             finish();
-        }*/
+        }
     }
 
     @Override
@@ -211,6 +219,9 @@ public class GameActivity extends AppCompatActivity {
         super.onPause();
         if (arSceneView != null) {
             arSceneView.pause();
+            paused = true;
+            if(mediaPlayer!=null)
+                mediaPlayer.release();
         }
     }
 
@@ -219,7 +230,17 @@ public class GameActivity extends AppCompatActivity {
         super.onDestroy();
         if (arSceneView != null) {
             arSceneView.destroy();
+            ended = true;
+            if(mediaPlayer!=null)
+                mediaPlayer.release();
         }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(mediaPlayer!=null)
+            mediaPlayer.release();
     }
 
     private boolean checkSuccess() {
@@ -250,6 +271,7 @@ public class GameActivity extends AppCompatActivity {
                         // Change cell's status
                         board_cells_status[i] = 1;
                         // Play object's name sound
+                        mediaPlayer.release();
                         mediaPlayer = MediaPlayer.create(this, sounds[i]);
                         mediaPlayer.start();
                         // Put the object at the center of the board's cell
@@ -261,6 +283,7 @@ public class GameActivity extends AppCompatActivity {
                     // The tapped object overlaps a wrong board's cell
                     if (i != tappedObjectIndex && ( node == boardRenderer.getBoardNodes()[i] || distMeters <= 0.06 )) {
                         // Play the sound effect
+                        mediaPlayer.release();
                         mediaPlayer = MediaPlayer.create(this, R.raw.wrong);
                         mediaPlayer.start();
                         // Put the object at its initial position
@@ -296,6 +319,7 @@ public class GameActivity extends AppCompatActivity {
             }
             // Play sound effect
             mediaPlayer.setOnCompletionListener(mp -> {
+                mediaPlayer.release();
                 mediaPlayer = MediaPlayer.create(GameActivity.this, R.raw.goodjob);
                 mediaPlayer.start();
             });
@@ -316,7 +340,11 @@ public class GameActivity extends AppCompatActivity {
                             startActivity(intent);
                         }
                         winDialog.dismiss();
+                        LevelsActivity.setMustFinish(true);
                         finish();
+                        Intent intent = new Intent(GameActivity.this, LevelsActivity.class);
+                        intent.putExtra("topic", selectedTopic);
+                        startActivity(intent);
                     }
             );
             Button quit = winDialog.findViewById(R.id.quit_game_button);
@@ -330,8 +358,7 @@ public class GameActivity extends AppCompatActivity {
         }
         else {
             // Play sound effect
-            if(mediaPlayer.isPlaying())
-                mediaPlayer.stop();
+            mediaPlayer.release();
             mediaPlayer = MediaPlayer.create(GameActivity.this, R.raw.timeisup);
             mediaPlayer.start();
             // Open lose dialog
@@ -372,7 +399,7 @@ public class GameActivity extends AppCompatActivity {
         timer = findViewById(R.id.timerTextView);
         String timerIniTxt = board_cells_status.length * 4 / 60 + ":" + board_cells_status.length * 4 % 60;
         timer.setText(timerIniTxt);
-        new Thread(() -> {
+        timerThread = new Thread(() -> {
             int seconds = board_cells_status.length * 4;
             while (!ended && seconds != 0) {
                 if (!paused) {
@@ -398,7 +425,8 @@ public class GameActivity extends AppCompatActivity {
                     });
                 }
             }
-        }).start();
+        });
+        timerThread.start();
     }
 
     public void loadObjectsModels() {
@@ -418,7 +446,11 @@ public class GameActivity extends AppCompatActivity {
                                     .build()
                     )
                     .build()
-                    .thenAccept(renderable -> objectsModels[finalI] = renderable)
+                    .thenAccept( renderable -> {
+                        objectsModels[finalI] = renderable;
+                        if(finalI == objects_gltf_uris.length -1)
+                            objectsLoaded = true;
+                    })
                     .exceptionally(
                             throwable -> {
                                 Toast toast = Toast.makeText(
@@ -428,6 +460,7 @@ public class GameActivity extends AppCompatActivity {
                                 toast.setGravity(Gravity.CENTER, 0, 0);
                                 toast.show();
                                 Log.d("__model__", "Unable to load model " + objects_gltf_uris[finalI]);
+                                finish();
                                 return null;
                             });
         }
@@ -450,7 +483,11 @@ public class GameActivity extends AppCompatActivity {
                                     .build()
                     )
                     .build()
-                    .thenAccept(renderable -> boardModels[finalI] = renderable)
+                    .thenAccept(renderable -> {
+                        boardModels[finalI] = renderable;
+                        if(finalI == objects_gltf_uris.length -1)
+                            boardLoaded = true;
+                    })
                     .exceptionally(
                             throwable -> {
                                 Toast toast = Toast.makeText(
@@ -460,6 +497,7 @@ public class GameActivity extends AppCompatActivity {
                                 toast.setGravity(Gravity.CENTER, 0, 0);
                                 toast.show();
                                 Log.d("__model__", "Unable to load model " + board_gltf_uris[finalI]);
+                                finish();
                                 return null;
                             });
         }
@@ -475,32 +513,29 @@ public class GameActivity extends AppCompatActivity {
         switch (selectedTopic) {
             case "Alphabets":
                 switch (level) {
+                    case 1 :
+                    case 2 :
+                    case 3 :
                     case 0 :
                         board_gltf_uris = new String[]{
-                                "https://raw.githubusercontent.com/elkassimyhajar/AR-Android-App/meryem/app/sampledata/A_mold_blue.gltf",
-                                "https://raw.githubusercontent.com/elkassimyhajar/AR-Android-App/meryem/app/sampledata/A_mold_blue.gltf",
-                                "https://raw.githubusercontent.com/elkassimyhajar/AR-Android-App/meryem/app/sampledata/A_mold_blue.gltf",
-                                "https://raw.githubusercontent.com/elkassimyhajar/AR-Android-App/meryem/app/sampledata/A_mold_blue.gltf"
+                                "https://raw.githubusercontent.com/elkassimyhajar/AR-Android-App/meryem/app/sampledata/A_mold.gltf",
+                                "https://raw.githubusercontent.com/elkassimyhajar/AR-Android-App/meryem/app/sampledata/B_mold.gltf",
+                                "https://raw.githubusercontent.com/elkassimyhajar/AR-Android-App/meryem/app/sampledata/L_mold.gltf",
+                                "https://raw.githubusercontent.com/elkassimyhajar/AR-Android-App/meryem/app/sampledata/M_mold.gltf"
                         };
                         objects_gltf_uris = new String[]{
-                                "https://raw.githubusercontent.com/elkassimyhajar/AR-Android-App/meryem/app/sampledata/A_blue.gltf",
-                                "https://raw.githubusercontent.com/elkassimyhajar/AR-Android-App/meryem/app/sampledata/A_blue.gltf",
-                                "https://raw.githubusercontent.com/elkassimyhajar/AR-Android-App/meryem/app/sampledata/A_blue.gltf",
-                                "https://raw.githubusercontent.com/elkassimyhajar/AR-Android-App/meryem/app/sampledata/A_blue.gltf"
+                                "https://raw.githubusercontent.com/elkassimyhajar/AR-Android-App/meryem/app/sampledata/A.gltf",
+                                "https://raw.githubusercontent.com/elkassimyhajar/AR-Android-App/meryem/app/sampledata/B.gltf",
+                                "https://raw.githubusercontent.com/elkassimyhajar/AR-Android-App/meryem/app/sampledata/L.gltf",
+                                "https://raw.githubusercontent.com/elkassimyhajar/AR-Android-App/meryem/app/sampledata/M.gltf"
                         };
                         board_cells_status = new int[board_gltf_uris.length];
                         sounds = new int[] {
-                                R.raw.bluecircle,
-                                R.raw.bluecircle,
-                                R.raw.bluecircle,
-                                R.raw.bluecircle,
+                                R.raw.a,
+                                R.raw.b,
+                                R.raw.l,
+                                R.raw.m
                         };
-                        break;
-                    case 1 :
-                        break;
-                    case 2 :
-                        break;
-                    case 3 :
                         break;
                 }
                 break;
