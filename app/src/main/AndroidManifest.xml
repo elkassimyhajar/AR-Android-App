@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.match_it">
+    <!-- Internet permission -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <!-- -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <!-- Camera permission -->
     <uses-permission android:name="android.permission.CAMERA" />
     <!-- Camera AR Feature -->
@@ -22,15 +26,14 @@
             android:name="com.google.ar.core"
             android:value="required" />
 
-        <activity android:name=".TopicsActivity">
+        <activity android:name=".activities.TopicsActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoadingActivity"/>
-        <activity android:name=".GameActivity"/>
-        <activity android:name=".Ar"/>
-
+        <activity android:name=".activities.LoadingActivity"/>
+        <activity android:name=".activities.LevelsActivity"/>
+        <activity android:name=".activities.GameActivity"/>
     </application>
 </manifest>
