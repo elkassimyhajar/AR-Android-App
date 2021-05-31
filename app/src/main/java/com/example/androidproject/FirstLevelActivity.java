@@ -2,8 +2,6 @@ package com.example.androidproject;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.CompositePageTransformer;
 import androidx.viewpager2.widget.MarginPageTransformer;
@@ -12,15 +10,11 @@ import androidx.viewpager2.widget.ViewPager2;
 import android.annotation.SuppressLint;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.os.Handler;
-import android.service.autofill.FieldClassification;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,10 +29,7 @@ public class FirstLevelActivity extends AppCompatActivity {
 
     MediaPlayer sound, soundSuccess, soundWin;
 
-    boolean isPlaying;
-
     private ViewPager2 viewPager2;
-    private Handler sliderHandler = new Handler();
 
     @SuppressLint("ResourceType")
     @Override
@@ -82,16 +73,6 @@ public class FirstLevelActivity extends AppCompatActivity {
 
         viewPager2.setPageTransformer(compositePageTransformer);
 
-        viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
-            @Override
-            public void onPageSelected(int position) {
-                super.onPageSelected(position);
-                sliderHandler.removeCallbacks(sliderRunnable);
-                sliderHandler.postDelayed(sliderRunnable, 3000); // slide duration 3 seconds
-            }
-        });
-
-
         ///Body images
         img1 = (ImageView) findViewById(R.id.raccoon);
         img2 = (ImageView) findViewById(R.id.snake);
@@ -99,13 +80,11 @@ public class FirstLevelActivity extends AppCompatActivity {
         img4 = (ImageView) findViewById(R.id.owl);
         img5 = (ImageView) findViewById(R.id.woodpecker);
 
-
-
     }
 
     public void counter() {
         counter = 5;
-        counterTxt.setText("Elements to discover : "+Integer.toString(counter));
+        counterTxt.setText(Integer.toString(counter));
     }
 
     public void minusCounter() {
@@ -119,7 +98,7 @@ public class FirstLevelActivity extends AppCompatActivity {
         });
 
         counter--;
-        counterTxt.setText("Elements to discover : "+Integer.toString(counter));
+        counterTxt.setText(Integer.toString(counter));
 
         soundWin = MediaPlayer.create(getApplicationContext(), R.raw.winning_sound_effect);
         if(counter == 0) {
@@ -137,25 +116,6 @@ public class FirstLevelActivity extends AppCompatActivity {
                 }
             });
         }
-    }
-
-    private Runnable sliderRunnable = new Runnable() {
-        @Override
-        public void run() {
-            viewPager2.setCurrentItem(viewPager2.getCurrentItem() + 1);
-        }
-    };
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        sliderHandler.removeCallbacks(sliderRunnable);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        sliderHandler.postDelayed(sliderRunnable, 3000);
     }
 
     public void raccoonClicked(View view) {
