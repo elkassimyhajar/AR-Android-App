@@ -101,16 +101,14 @@ public class GameActivity extends AppCompatActivity {
 
         // Set a tap listener on the AR fragment to determine on which plane models will be rendered
         arFragment.setOnTapArPlaneListener((hitResult, plane, motionEvent) -> {
-            // Load 3d assets
             if(shouldLoadModels) {
                 shouldLoadModels = false;
                 snackbar = Snackbar
-                        .make(findViewById(R.id.game_relativeLayout), "Loading Assets ... Don't move your phone.", Snackbar.LENGTH_INDEFINITE);
+                        .make(findViewById(R.id.arFragment), "Loading Assets ... Don't move your phone.", Snackbar.LENGTH_INDEFINITE);
                 snackbar.show();
+                // Load 3d assets
                 loadBoardModels();
                 loadObjectsModels();
-            }
-            if ( !hasPlacedModels && arSceneView.getSession()!=null) {
                 // Adjust the hit pose
                 Pose hitPose = hitResult.getHitPose();
                 float[] translation = hitPose.getTranslation();
@@ -123,6 +121,7 @@ public class GameActivity extends AppCompatActivity {
                         .addOnUpdateListener(this::onUpdateFrame);
             }
         });
+
         // Set a click listener on pause button
         pauseButton = findViewById(R.id.PauseButton);
         pauseButton.setOnClickListener(
