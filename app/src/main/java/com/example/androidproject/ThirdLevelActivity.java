@@ -29,6 +29,7 @@ public class ThirdLevelActivity extends AppCompatActivity {
     public ImageView img1, img2, img3, img4, img5, img6, img7, img8,img9, img10;
     public TextView counterTxt, countDownTxt;
     public int counter;
+    boolean isRunning = false;
 
     MediaPlayer sound, soundSuccess, soundWin;
 
@@ -51,6 +52,7 @@ public class ThirdLevelActivity extends AppCompatActivity {
         new CountDownTimer(duration, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
+                isRunning = true;
                 //When tick convert millisecond to minute and second
                 String sDuration = String.format(Locale.ENGLISH, "%02d : %02d"
                                     , TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)
@@ -63,6 +65,7 @@ public class ThirdLevelActivity extends AppCompatActivity {
 
             @Override
             public void onFinish() {
+                isRunning= false;
                 //When finish
                 //Hide text view
                 countDownTxt.setVisibility(View.GONE);
@@ -151,7 +154,7 @@ public class ThirdLevelActivity extends AppCompatActivity {
         counterTxt.setText(Integer.toString(counter));
 
         soundWin = MediaPlayer.create(getApplicationContext(), R.raw.winning_sound_effect);
-        if(counter == 0) {
+        if(counter == 0 && isRunning ==true) {
 
             //Show toast
             Toast toasty = Toasty.success(this, "Good Job", Toast.LENGTH_SHORT);
@@ -166,8 +169,13 @@ public class ThirdLevelActivity extends AppCompatActivity {
                 }
             });
 
-//            Intent intent = new Intent(getApplicationContext(), LevelsActivity.class);
-//            startActivity(intent);
+            soundWin.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    Intent intent = new Intent(getApplicationContext(), LevelsActivity.class);
+                    startActivity(intent);
+                }
+            });
 
         }
 

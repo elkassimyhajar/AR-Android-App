@@ -7,6 +7,7 @@ import androidx.viewpager2.widget.CompositePageTransformer;
 import androidx.viewpager2.widget.MarginPageTransformer;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -124,6 +125,14 @@ public class SecondLevelActivity extends AppCompatActivity {
                 public void onCompletion(MediaPlayer mp) {
                     mp.release();
                     soundWin.start();
+                }
+            });
+
+            soundWin.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    Intent intent = new Intent(getApplicationContext(), LevelsActivity.class);
+                    startActivity(intent);
                 }
             });
         }
