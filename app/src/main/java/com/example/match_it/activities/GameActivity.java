@@ -105,7 +105,7 @@ public class GameActivity extends AppCompatActivity {
             if(shouldLoadModels) {
                 shouldLoadModels = false;
                 snackbar = Snackbar
-                        .make(findViewById(R.id.game_relativeLayout), "Loading Assets ...", Snackbar.LENGTH_INDEFINITE);
+                        .make(findViewById(R.id.game_relativeLayout), "Loading Assets ... Don't move your phone.", Snackbar.LENGTH_INDEFINITE);
                 snackbar.show();
                 loadBoardModels();
                 loadObjectsModels();
