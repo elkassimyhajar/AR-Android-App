@@ -19,6 +19,8 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import es.dmoral.toasty.Toasty;
 
@@ -27,10 +29,6 @@ public class ThirdLevelActivity extends AppCompatActivity {
     public ImageView img1, img2, img3, img4, img5, img6, img7, img8,img9, img10;
     public TextView counterTxt, countDownTxt;
     public int counter;
-
-    public CountDownTimer countDownTimer;
-    public long timeLeftInMilliSeconds = 600000; //1 min
-    public boolean timerRunning;
 
     MediaPlayer sound, soundSuccess, soundWin;
 
@@ -45,8 +43,43 @@ public class ThirdLevelActivity extends AppCompatActivity {
         counter();
 
         countDownTxt = (TextView) findViewById(R.id.countDownTxt);
-        startStop();
-        updateTimer();
+
+        //Initialize timer duration
+        long duration = TimeUnit.MINUTES.toMillis(1);
+
+        //initialize countdown timer
+        new CountDownTimer(duration, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                //When tick convert millisecond to minute and second
+                String sDuration = String.format(Locale.ENGLISH, "%02d : %02d"
+                                    , TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)
+                                    , TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) -
+                                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
+
+                //Set converted string on text view
+                countDownTxt.setText(sDuration);
+            }
+
+            @Override
+            public void onFinish() {
+                //When finish
+                //Hide text view
+                countDownTxt.setVisibility(View.GONE);
+                //Display toast
+                if(counter != 0) {
+                    sound = MediaPlayer.create(getApplicationContext(), R.raw.game_over_sound_effect);
+                    sound.start();
+
+                    Toast toasty = Toasty.error(getApplicationContext(), "Time is over! Try again!", Toast.LENGTH_SHORT);
+                    toasty.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL, 0, 0);
+                    toasty.show();
+                    
+                    startActivity(getIntent());
+                }
+
+            }
+        }.start();
 
         //ViewPager
 
@@ -99,50 +132,6 @@ public class ThirdLevelActivity extends AppCompatActivity {
         img10 = (ImageView) findViewById(R.id.frog);
     }
 
-    private void startStop() {
-        if(timerRunning) {
-            stopTimer();
-        } else {
-            startTimer();
-        }
-    }
-
-    private void startTimer() {
-        countDownTimer = new CountDownTimer(timeLeftInMilliSeconds, 1000) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-                timeLeftInMilliSeconds = millisUntilFinished;
-                updateTimer();
-            }
-
-            @Override
-            public void onFinish() {
-
-            }
-        }.start();
-
-        timerRunning = true;
-    }
-
-    private void stopTimer() {
-        countDownTimer.cancel();
-        timerRunning = false;
-    }
-
-    private void updateTimer() {
-        int minutes = (int) timeLeftInMilliSeconds / 60000;
-        int seconds = (int) timeLeftInMilliSeconds % 60000 / 1000;
-
-        String timeLeftText;
-
-        timeLeftText = "" + minutes;
-        timeLeftText += ":";
-        if(seconds < 10) timeLeftText += "0";
-        timeLeftText += seconds;
-
-        countDownTxt.setText(timeLeftText);
-    }
-
     public void counter() {
         counter = 10;
         counterTxt.setText(Integer.toString(counter));
@@ -162,7 +151,7 @@ public class ThirdLevelActivity extends AppCompatActivity {
         counterTxt.setText(Integer.toString(counter));
 
         soundWin = MediaPlayer.create(getApplicationContext(), R.raw.winning_sound_effect);
-        if(counter == 0 && timeLeftInMilliSeconds > 0) {
+        if(counter == 0) {
 
             //Show toast
             Toast toasty = Toasty.success(this, "Good Job", Toast.LENGTH_SHORT);
@@ -177,26 +166,8 @@ public class ThirdLevelActivity extends AppCompatActivity {
                 }
             });
 
-            Intent intent = new Intent(getApplicationContext(), LevelsActivity.class);
-            startActivity(intent);
-
-        }
-
-        if(counter !=0 && timeLeftInMilliSeconds == 0) {
-            //Show toast
-            Toast toasty = Toasty.error(this, "Time is over! Try again!", Toast.LENGTH_SHORT);
-            toasty.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL, 0, 0);
-            toasty.show();
-
-            sound.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mp) {
-                    mp.release();
-                    soundWin.start();
-                }
-            });
-
-            startActivity(getIntent());
+//            Intent intent = new Intent(getApplicationContext(), LevelsActivity.class);
+//            startActivity(intent);
 
         }
 
