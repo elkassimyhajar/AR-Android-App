@@ -15,4 +15,5 @@
     <string name="restart">RESTART</string>
     <string name="help">HELP</string>
     <string name="help_txt">Drag each object to the game board. Then tap on it to check if you have placed it in the right place or not.</string>
+    <string name="how_to_play">How to play ?</string>
 </resources>
