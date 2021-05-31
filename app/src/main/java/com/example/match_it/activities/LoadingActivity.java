@@ -2,15 +2,21 @@ package com.example.match_it.activities;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ActivityManager;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.match_it.R;
+
+import java.util.Objects;
 
 public class LoadingActivity extends Activity {
 
@@ -56,7 +62,11 @@ public class LoadingActivity extends Activity {
                 try {
                     for (i = 0; i < gameName.length(); i++) {
                         Thread.sleep(250);
-                        runOnUiThread(() -> textView.setText(gameName.substring(0, i)));
+                        runOnUiThread(() -> {
+                            textView.setText(gameName.substring(0, i));
+                            if(!checkSystemSupport(LoadingActivity.this))
+                                finish();
+                        });
                     }
                     Thread.sleep(250);
                     runOnUiThread(() -> startActivity(intent));
@@ -85,5 +95,24 @@ public class LoadingActivity extends Activity {
         super.onPause();
         thread.interrupt();
         finish();
+    }
+
+    private static boolean checkSystemSupport(Activity activity) {
+        // checking whether the API version of the running Android >= 24
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            String openGlVersion = ((ActivityManager) Objects.requireNonNull(activity.getSystemService(Context.ACTIVITY_SERVICE))).getDeviceConfigurationInfo().getGlEsVersion();
+            // checking whether the OpenGL version >= 3.0
+            if (Double.parseDouble(openGlVersion) >= 3.0) {
+                return true;
+            } else {
+                Toast.makeText(activity, "App needs OpenGl Version 3.0 or later", Toast.LENGTH_LONG).show();
+                activity.finish();
+                return false;
+            }
+        } else {
+            Toast.makeText(activity, "App does not support required Build Version", Toast.LENGTH_LONG).show();
+            activity.finish();
+            return false;
+        }
     }
 }

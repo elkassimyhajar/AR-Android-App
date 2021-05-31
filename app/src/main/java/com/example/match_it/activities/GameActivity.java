@@ -1,7 +1,5 @@
 package com.example.match_it.activities;
 
-import android.app.Activity;
-import android.app.ActivityManager;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -12,7 +10,6 @@ import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -28,6 +25,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.match_it.R;
 import com.example.match_it.render.BoardRenderer;
 import com.example.match_it.render.ObjectsRenderer;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.ar.core.Config;
 import com.google.ar.core.Pose;
 import com.google.ar.core.Session;
@@ -41,12 +39,13 @@ import com.google.ar.sceneform.rendering.ModelRenderable;
 import com.google.ar.sceneform.ux.ArFragment;
 
 import java.util.Arrays;
-import java.util.Objects;
 
 public class GameActivity extends AppCompatActivity {
+    private ArFragment arFragment;
     private ArSceneView arSceneView;
     private TextView timer;
     private ImageButton pauseButton;
+    Snackbar snackbar;
 
     private String selectedTopic;
     private int level;
@@ -56,6 +55,7 @@ public class GameActivity extends AppCompatActivity {
     private int[] board_cells_status;
     private int[] sounds;
 
+    private Pose pose;
     private BoardRenderer boardRenderer;
     private ObjectsRenderer objectsRenderer;
 
@@ -63,12 +63,13 @@ public class GameActivity extends AppCompatActivity {
     private ModelRenderable[] objectsModels;
     private MediaPlayer mediaPlayer;
 
-    Thread timerThread;
+    private Thread timerThread;
 
+    // False once models loading has started
+    private boolean shouldLoadModels = true;
     //
-    private boolean objectsLoaded;
-    //
-    private boolean boardLoaded;
+    private int nbrObjectsLoaded;
+    private int nbrBoardModelsLoaded;
     // True once models have been placed
     private boolean hasPlacedModels = false;
     // True when the game is pause
@@ -79,7 +80,6 @@ public class GameActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        checkSystemSupport(this);
 
         if(!checkNetworkAvailability()) {
             Toast toast = Toast.makeText(this, "Check your internet connexion and try again.", Toast.LENGTH_LONG);
@@ -90,65 +90,41 @@ public class GameActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_game);
 
-        ArFragment arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.arFragment);
+        arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.arFragment);
         if(arFragment == null)
             return;
 
-        while (arSceneView == null)
-            arSceneView = arFragment.getArSceneView();
-
+        arSceneView = arFragment.getArSceneView();
 
         // Init
         init();
-        // Load 3d assets
-        loadBoardModels();
-        loadObjectsModels();
+
         // Set a tap listener on the AR fragment to determine on which plane models will be rendered
         arFragment.setOnTapArPlaneListener((hitResult, plane, motionEvent) -> {
-            if(!objectsLoaded || !boardLoaded) {
-                Toast toast = Toast.makeText(this, "Loading assets...", Toast.LENGTH_SHORT);
-                toast.setGravity(Gravity.CENTER, 0, 0);
-                toast.show();
+            // Load 3d assets
+            if(shouldLoadModels) {
+                shouldLoadModels = false;
+                snackbar = Snackbar
+                        .make(findViewById(R.id.game_relativeLayout), "Loading Assets ...", Snackbar.LENGTH_INDEFINITE);
+                snackbar.show();
+                loadBoardModels();
+                loadObjectsModels();
             }
-            else if(!hasPlacedModels && arSceneView.getSession()!=null) {
+            if ( !hasPlacedModels && arSceneView.getSession()!=null) {
                 // Adjust the hit pose
                 Pose hitPose = hitResult.getHitPose();
                 float[] translation = hitPose.getTranslation();
                 float[] rotation = new float[4];
                 rotation[0] = 0.0f; rotation[1] = 0.0f; rotation[2] = 0.0f; rotation[3] = 0.0f;
-                Pose pose = new Pose(translation, rotation);
-                // Play sound effect
-                mediaPlayer = MediaPlayer.create(this, R.raw.playbuttonclick);
-                mediaPlayer.start();
-                // Render the game board
-                boardRenderer = new BoardRenderer(arSceneView, boardModels, pose);
-                boardRenderer.render();
-                // Render the game objects
-                objectsRenderer = new ObjectsRenderer(arFragment, objectsModels, pose, boardRenderer.getBOARD_CELL_COUNT());
-                objectsRenderer.render();
-                // Disable Plane Renderer
-                arSceneView.getPlaneRenderer().setEnabled(false);
-                // Stop finding planes
-                arSceneView.getSession().getConfig().setPlaneFindingMode(Config.PlaneFindingMode.DISABLED);
-                //
-                hasPlacedModels = true;
+                pose = new Pose(translation, rotation);
                 // Set an update listener on the AR Scene
                 arSceneView
                         .getScene()
                         .addOnUpdateListener(this::onUpdateFrame);
-                // Start the timer
-                startTimer();
-                // Set a tap listener on every object
-                for(int i = 0; i < objectsRenderer.getObjectsNodes().length; i++) {
-                    int finalI = i;
-                    objectsRenderer.getObjectsNodes()[i].setOnTapListener(
-                            (hitTestResult, motionEvent1) -> onTapObject(finalI)
-                    );
-                }
             }
         });
         // Set a click listener on pause button
-        pauseButton = (ImageButton) findViewById(R.id.PauseButton);
+        pauseButton = findViewById(R.id.PauseButton);
         pauseButton.setOnClickListener(
                 v -> {
                     paused = true;
@@ -301,8 +277,37 @@ public class GameActivity extends AppCompatActivity {
 
     private void onUpdateFrame(FrameTime frameTime) {
         Session session = arSceneView.getSession();
-        if (session == null || boardRenderer == null || objectsRenderer == null) {
+        if (session == null) {
             return;
+        }
+        // Render models if the've been loaded and start the game
+        if( !hasPlacedModels && nbrObjectsLoaded == objectsModels.length && nbrBoardModelsLoaded == boardModels.length) {
+            Log.d("__FRAME UPDATE__", "putting assets");
+            hasPlacedModels = true;
+            // Play sound effect
+            mediaPlayer = MediaPlayer.create(this, R.raw.playbuttonclick);
+            mediaPlayer.start();
+            // Remove the snackbar
+            snackbar.dismiss();
+            // Render the game board
+            boardRenderer = new BoardRenderer(arSceneView, boardModels, pose);
+            boardRenderer.render();
+            // Render the game objects
+            objectsRenderer = new ObjectsRenderer(arFragment, objectsModels, pose, boardRenderer.getBOARD_CELL_COUNT());
+            objectsRenderer.render();
+            // Disable Plane Renderer
+            arSceneView.getPlaneRenderer().setEnabled(false);
+            // Stop finding planes
+            arSceneView.getSession().getConfig().setPlaneFindingMode(Config.PlaneFindingMode.DISABLED);
+            // Start the timer
+            startTimer();
+            // Set a tap listener on every object
+            for(int i = 0; i < objectsRenderer.getObjectsNodes().length; i++) {
+                int finalI = i;
+                objectsRenderer.getObjectsNodes()[i].setOnTapListener(
+                        (hitTestResult, motionEvent1) -> onTapObject(finalI)
+                );
+            }
         }
         if (!ended && !paused && checkSuccess()) {
             ended = true;
@@ -450,20 +455,20 @@ public class GameActivity extends AppCompatActivity {
                                     .build()
                     )
                     .build()
-                    .thenAccept( renderable -> {
+                    .thenAccept(renderable -> {
                         objectsModels[finalI] = renderable;
-                        if(finalI == objects_gltf_uris.length -1)
-                            objectsLoaded = true;
+                        nbrObjectsLoaded++;
+                        Log.d("__Loading Objects__", String.valueOf(nbrObjectsLoaded));
                     })
                     .exceptionally(
                             throwable -> {
+                                Log.d("__model__", "Unable to load model " + objects_gltf_uris[finalI]);
                                 Toast toast = Toast.makeText(
                                         this,
                                         "Unable to load model " + objects_gltf_uris[finalI],
                                         Toast.LENGTH_LONG);
                                 toast.setGravity(Gravity.CENTER, 0, 0);
                                 toast.show();
-                                Log.d("__model__", "Unable to load model " + objects_gltf_uris[finalI]);
                                 finish();
                                 return null;
                             });
@@ -489,18 +494,18 @@ public class GameActivity extends AppCompatActivity {
                     .build()
                     .thenAccept(renderable -> {
                         boardModels[finalI] = renderable;
-                        if(finalI == objects_gltf_uris.length -1)
-                            boardLoaded = true;
+                        nbrBoardModelsLoaded++;
+                        Log.d("__Loading Board__", String.valueOf(nbrBoardModelsLoaded));
                     })
-                    .exceptionally(
+            .exceptionally(
                             throwable -> {
+                                Log.d("__model__", "Unable to load model " + board_gltf_uris[finalI]);
                                 Toast toast = Toast.makeText(
                                         this,
                                         "Unable to load model " + board_gltf_uris[finalI],
                                         Toast.LENGTH_LONG);
                                 toast.setGravity(Gravity.CENTER, 0, 0);
                                 toast.show();
-                                Log.d("__model__", "Unable to load model " + board_gltf_uris[finalI]);
                                 finish();
                                 return null;
                             });
@@ -668,25 +673,6 @@ public class GameActivity extends AppCompatActivity {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
-
-    private static boolean checkSystemSupport(Activity activity) {
-        // checking whether the API version of the running Android >= 24
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            String openGlVersion = ((ActivityManager) Objects.requireNonNull(activity.getSystemService(Context.ACTIVITY_SERVICE))).getDeviceConfigurationInfo().getGlEsVersion();
-            // checking whether the OpenGL version >= 3.0
-            if (Double.parseDouble(openGlVersion) >= 3.0) {
-                return true;
-            } else {
-                Toast.makeText(activity, "App needs OpenGl Version 3.0 or later", Toast.LENGTH_LONG).show();
-                activity.finish();
-                return false;
-            }
-        } else {
-            Toast.makeText(activity, "App does not support required Build Version", Toast.LENGTH_LONG).show();
-            activity.finish();
-            return false;
-        }
     }
 }
 
