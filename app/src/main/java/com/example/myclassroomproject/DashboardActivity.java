@@ -1,11 +1,15 @@
 package com.example.myclassroomproject;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.util.Pair;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 
 public class DashboardActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -33,8 +37,13 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
     @Override
     public void onClick(View v) {
         Intent i = new Intent(this, IntermediateDashboard.class);
+
+        View sharedView = v.findViewWithTag("themeImage");
+        String transitionName = getString(R.string.themeName);
+        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this, sharedView, transitionName);
+
         i.putExtra("theme", v.getTag().toString());
-        startActivity(i);
+        startActivity(i, options.toBundle());
         /*switch (v.getId()){
             case R.id.ialphabet:
                 i = new Intent(this, alphabet.class);

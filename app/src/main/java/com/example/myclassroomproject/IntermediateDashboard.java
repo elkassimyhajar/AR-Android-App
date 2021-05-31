@@ -4,17 +4,23 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.transition.Transition;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 public class IntermediateDashboard extends AppCompatActivity implements View.OnClickListener{
     private ImageView img;
     CardView learn, play, practice;
     String theme;
-
+    private List<Lesson> lessons;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,6 +31,8 @@ public class IntermediateDashboard extends AppCompatActivity implements View.OnC
         practice = (CardView) findViewById(R.id.practice);
 
         learn.setOnClickListener(this);
+
+        lessons = new ArrayList<>();
 
         Intent i = getIntent();
         theme = i.getStringExtra("theme");
@@ -39,7 +47,7 @@ public class IntermediateDashboard extends AppCompatActivity implements View.OnC
         if (theme.equals("numbers")){
             img.setImageResource(R.drawable.numbers);
 
-            flipImage();
+            //flipImage();
         }else if (theme.equals("alphabet")){
             img.setImageResource(R.drawable.alphabet);
 
@@ -67,30 +75,12 @@ public class IntermediateDashboard extends AppCompatActivity implements View.OnC
 
     @Override
     public void onClick(View v) {
-        Intent i;
 
         switch (v.getId()){
             case R.id.learn:
-
-                if (theme.equals("numbers")){
-                    i = new Intent(this, numbers.class);
-                    startActivity(i);
-                }else if (theme.equals("alphabet")){
-                    i = new Intent(this, alphabet.class);
-                    startActivity(i);
-                }else if (theme.equals("fruits")){
-                    i = new Intent(this, fruits.class);
-                    startActivity(i);
-                }else if (theme.equals("veggies")){
-                    i = new Intent(this, veggies.class);
-                    startActivity(i);
-                }else if (theme.equals("shapes")){
-                    i = new Intent(this, shapes.class);
-                    startActivity(i);
-                }else if (theme.equals("animals")){
-                    i = new Intent(this, animals.class);
-                    startActivity(i);
-                }
+                Intent i = new Intent(this, LessonflipperActivity.class);
+                i.putExtra("theme", theme);
+                startActivity(i);
                 break;
             case R.id.play:
                 break;
@@ -102,4 +92,6 @@ public class IntermediateDashboard extends AppCompatActivity implements View.OnC
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.rotate);
         img.startAnimation(animation);
     }
+
+
 }

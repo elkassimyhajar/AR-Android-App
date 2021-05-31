@@ -5,8 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradientbg"
     tools:context=".DashboardActivity">
+
 
 
     <LinearLayout
@@ -14,12 +14,23 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="My Classroom"
-            android:layout_marginLeft="52dp"
-            android:textSize="40dp"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:paddingRight="25dp"
+            android:paddingBottom="10dp"
+            android:background="@drawable/shapebg">
+
+            <ImageView
+                android:layout_width="1000dp"
+                android:layout_height="1000dp"
+                android:src="@drawable/classe"
+                android:transitionName="@string/themeName"
+                android:tag="themeImage"/>
+
+        </RelativeLayout>
+
         <GridLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -49,7 +60,9 @@
                     <ImageView
                         android:layout_width="110dp"
                         android:layout_height="110dp"
-                        android:src="@drawable/numbers" />
+                        android:src="@drawable/numbers"
+                        android:transitionName="@string/themeName"
+                        android:tag="themeImage"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -82,7 +95,9 @@
                     <ImageView
                         android:layout_width="110dp"
                         android:layout_height="110dp"
-                        android:src="@drawable/alphabet" />
+                        android:src="@drawable/alphabet"
+                        android:transitionName="@string/themeName"
+                        android:tag="themeImage"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -116,7 +131,9 @@
                     <ImageView
                         android:layout_width="110dp"
                         android:layout_height="110dp"
-                        android:src="@drawable/animals" />
+                        android:src="@drawable/animals"
+                        android:transitionName="@string/themeName"
+                        android:tag="themeImage" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -149,7 +166,9 @@
                     <ImageView
                         android:layout_width="110dp"
                         android:layout_height="110dp"
-                        android:src="@drawable/shapes" />
+                        android:src="@drawable/shapes"
+                        android:transitionName="@string/themeName"
+                        android:tag="themeImage"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -182,7 +201,9 @@
                     <ImageView
                         android:layout_width="110dp"
                         android:layout_height="110dp"
-                        android:src="@drawable/fruits" />
+                        android:src="@drawable/fruits"
+                        android:transitionName="@string/themeName"
+                        android:tag="themeImage"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -215,7 +236,9 @@
                     <ImageView
                         android:layout_width="110dp"
                         android:layout_height="110dp"
-                        android:src="@drawable/veggies" />
+                        android:src="@drawable/veggies"
+                        android:transitionName="@string/themeName"
+                        android:tag="themeImage"/>
 
                     <TextView
                         android:layout_width="wrap_content"

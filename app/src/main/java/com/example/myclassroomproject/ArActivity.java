@@ -14,7 +14,7 @@ import com.google.ar.sceneform.ux.ArFragment;
 public class ArActivity extends AppCompatActivity {
 
     private ArFragment arFragment;
-    private static String GLTF_ASSET = "https://github.com/KhronosGroup/glTF-Sample-Models/raw/master/2.0/Duck/glTF/Duck.gltf";
+    private String GLTF_ASSET;
     //private String object;
 
     @Override
@@ -22,6 +22,7 @@ public class ArActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ar);
 
+        GLTF_ASSET = getIntent().getStringExtra("path");
         arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.arfragment);
         arFragment.setOnTapArPlaneListener((hitResult, plane, motionEvent) -> {
             placeModel(hitResult.createAnchor());
