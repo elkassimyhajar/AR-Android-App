@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,6 +29,8 @@ public class ThirdLevelActivity extends AppCompatActivity {
 
     public ImageView img1, img2, img3, img4, img5, img6, img7, img8,img9, img10;
     public TextView counterTxt, countDownTxt;
+    public Button btn_levels, btn_retry;
+
     public int counter;
     boolean isRunning = false;
 
@@ -39,6 +42,12 @@ public class ThirdLevelActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_third_level);
+
+        btn_levels = (Button) findViewById(R.id.levelsBtn);
+        btn_retry = (Button) findViewById(R.id.retryBtn);
+
+        btn_levels.setVisibility(View.INVISIBLE);
+        btn_retry.setVisibility(View.INVISIBLE);
 
         counterTxt = (TextView) findViewById(R.id.counterTxt);
         counter();
@@ -75,10 +84,12 @@ public class ThirdLevelActivity extends AppCompatActivity {
                     sound.start();
 
                     Toast toasty = Toasty.error(getApplicationContext(), "Time is over! Try again!", Toast.LENGTH_SHORT);
-                    toasty.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL, 0, 0);
+                    toasty.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL, 0, 60);
                     toasty.show();
-                    
-                    startActivity(getIntent());
+
+                    btn_levels.setVisibility(View.VISIBLE);
+                    btn_retry.setVisibility(View.VISIBLE);
+
                 }
 
             }
@@ -274,5 +285,14 @@ public class ThirdLevelActivity extends AppCompatActivity {
         sound.start();
         img10.setVisibility(View.INVISIBLE);
         minusCounter();
+    }
+
+    public void levelsBtnClicked(View view) {
+        Intent intent = new Intent(ThirdLevelActivity.this, LevelsActivity.class);
+        startActivity(intent);
+    }
+
+    public void retryBtnClicked(View view) {
+        startActivity(getIntent());
     }
 }

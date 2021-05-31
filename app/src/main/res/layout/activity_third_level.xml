@@ -82,6 +82,7 @@
         android:layout_height="0dp">
 
 
+
         <ImageView
             android:id="@+id/bird"
             android:layout_width="40dp"
@@ -236,6 +237,49 @@
             android:layout_marginRight="30dp"
             android:onClick="woodpeckerClicked"
             app:srcCompat="@drawable/woodpecker" />
+
+
+            <Button
+                android:id="@+id/levelsBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Levels Menu"
+                android:fontFamily="casual"
+                android:textStyle="bold"
+                android:shadowColor="#333333"
+                android:shadowRadius="2"
+                android:shadowDx="2"
+                android:shadowDy="2"
+                android:textColor="@color/white"
+                android:textSize="25sp"
+                android:outlineSpotShadowColor="@color/white"
+                android:padding="10dp"
+                android:background="@drawable/rounded_corner"
+                android:layout_marginBottom="20dp"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                android:onClick="levelsBtnClicked"/>
+
+            <Button
+                android:id="@+id/retryBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Try Again"
+                android:fontFamily="casual"
+                android:textStyle="bold"
+                android:shadowColor="#333333"
+                android:shadowRadius="2"
+                android:shadowDx="2"
+                android:shadowDy="2"
+                android:textColor="@color/white"
+                android:textSize="25sp"
+                android:outlineSpotShadowColor="@color/white"
+                android:padding="10dp"
+                android:background="@drawable/rounded_corner"
+                android:layout_below="@id/levelsBtn"
+                android:layout_centerHorizontal="true"
+                android:onClick="retryBtnClicked"/>
+
 
     </RelativeLayout>
 
