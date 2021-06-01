@@ -47,6 +47,12 @@
         <activity android:name=".WordFillActivity" />
 
         <!-- Activities of the first game -->
+        <activity android:name="com.example.androidproject.Introductory"/>
+        <activity android:name="com.example.androidproject.GameMainActivity"/>
+        <activity android:name="com.example.androidproject.LevelsActivity"/>
+        <activity android:name="com.example.androidproject.FirstLevelActivity"/>
+        <activity android:name="com.example.androidproject.SecondLevelActivity"/>
+        <activity android:name="com.example.androidproject.ThirdLevelActivity"/>
 
         <!-- Activities of the second game -->
         <activity android:name="com.example.match_it.activities.LoadingActivity"/>
