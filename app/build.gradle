@@ -40,4 +40,16 @@ dependencies {
     implementation 'com.google.ar.sceneform.ux:sceneform-ux:1.15.0'
     implementation 'com.google.ar.sceneform:assets:1.15.0'
     //implementation 'com.android.support:design:29.0.0'
+    
+    implementation 'androidx.cardview:cardview:1.0.0'
+
+    //Toasty
+    implementation 'com.github.GrenderG:Toasty:1.2.5'
+
+    //ViewPager2
+    implementation 'androidx.viewpager2:viewpager2:1.0.0'
+
+    //RoundedImageView
+    implementation 'com.makeramen:roundedimageview:2.3.0'
+    
 }
