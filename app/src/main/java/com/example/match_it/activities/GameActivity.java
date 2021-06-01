@@ -161,6 +161,7 @@ public class GameActivity extends AppCompatActivity {
                     intent.putExtra("level", level);
                     pauseDialog.dismiss();
                     startActivity(intent);
+                    pauseDialog.dismiss();
                     finish();
                 }
         );
