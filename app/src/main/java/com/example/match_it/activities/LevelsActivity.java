@@ -27,7 +27,7 @@ public class LevelsActivity extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_levels);
+        setContentView(R.layout.activity_matchit_levels);
 
         // Get the selected topic
         Bundle bundle = getIntent().getExtras();

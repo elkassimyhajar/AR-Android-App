@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import com.example.androidproject.Introductory;
 import com.example.match_it.activities.LoadingActivity;
 
 import java.util.ArrayList;
@@ -96,6 +97,11 @@ public class IntermediateDashboard extends AppCompatActivity implements View.OnC
                     startActivity(i);
                 } else if (theme.equals("animals") || theme.equals("veggies")) {
                     Log.d("__Theme__", theme);
+                    //pass the name of the selected theme to the next activity
+                    i = new Intent(this, Introductory.class);
+                    i.putExtra("topic", theme);
+                    //start the next activity
+                    startActivity(i);
                 }
                 break;
             case R.id.practice:
