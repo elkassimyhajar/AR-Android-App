@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.myclassroomproject"
-        minSdkVersion 27
+        minSdkVersion 24
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -29,15 +29,15 @@ android {
 }
 
 dependencies {
-    implementation 'com.android.support:appcompat-v7:28.0.0'
-    implementation 'com.android.support:cardview-v7:28.0.0'
-    implementation 'com.android.support.constraint:constraint-layout:2.0.4'
-    implementation 'com.google.ar.sceneform.ux:sceneform-ux:1.15.0'
-    implementation 'com.google.ar.sceneform:assets:1.15.0'
+    implementation 'androidx.appcompat:appcompat:1.3.0'
+    implementation 'com.android.support:cardview-v7:30.1.1'
+    implementation 'com.google.android.material:material:1.3.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'com.android.support:design:28.0.0'
-    testImplementation 'junit:junit:4.+'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
+    implementation 'com.google.ar.sceneform.ux:sceneform-ux:1.15.0'
+    implementation 'com.google.ar.sceneform:assets:1.15.0'
     //implementation 'com.android.support:design:29.0.0'
 }

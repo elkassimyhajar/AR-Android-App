@@ -1,18 +1,19 @@
 package com.example.myclassroomproject;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
-import android.transition.Transition;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
-import java.io.Serializable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+
+import com.example.match_it.activities.LoadingActivity;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -75,16 +76,27 @@ public class IntermediateDashboard extends AppCompatActivity implements View.OnC
 
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
         Intent i;
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.learn:
                 i = new Intent(this, LessonflipperActivity.class);
                 i.putExtra("theme", theme);
                 startActivity(i);
                 break;
             case R.id.play:
+                if (theme.equals("alphabet") || theme.equals("shapes")) {
+                    Log.d("__Theme__", theme);
+                    //pass the name of the selected theme to the next activity
+                    i = new Intent(this, LoadingActivity.class);
+                    i.putExtra("topic", theme);
+                    //start the next activity
+                    startActivity(i);
+                } else if (theme.equals("animals") || theme.equals("veggies")) {
+                    Log.d("__Theme__", theme);
+                }
                 break;
             case R.id.practice:
                 i = new Intent(this, WordFillActivity.class);
@@ -92,10 +104,10 @@ public class IntermediateDashboard extends AppCompatActivity implements View.OnC
                 break;
         }
     }
-    void flipImage(){
+
+    private void flipImage(){
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.rotate);
         img.startAnimation(animation);
     }
-
 
 }

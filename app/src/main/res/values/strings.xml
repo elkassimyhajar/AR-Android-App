@@ -1,4 +1,18 @@
 <resources>
-    <string name="app_name">MyClassroomProject</string>
+    <string name="app_name">MyClassroom</string>
     <string name="themeName">themeName</string>
+    <string name="game_name">Match it</string>
+    <string name="pause">Pause</string>
+    <string name="good_job">Good JOB</string>
+    <string name="next_level">NEXT LEVEL</string>
+    <string name="quit_game">QUIT GAME</string>
+    <string name="try_again">TRY AGAIN</string>
+    <string name="levels_menu">LEVELS MENU</string>
+    <string name="continue_game">CONTINUE</string>
+    <string name="restart">RESTART</string>
+    <string name="help">HELP</string>
+    <string name="help_txt">Drag each object to the game board. Then tap on it to check if you have placed it in the right place or not.</string>
+    <string name="how_to_play">How to play ?</string>
+    <string name="practice_your_writing">Practice your writing</string>
+    <string name="copyright_2021">Copyright © 2021</string>
 </resources>

@@ -2,14 +2,11 @@ package com.example.myclassroomproject;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
-import android.os.Parcelable;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
-import android.util.Pair;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 public class DashboardActivity extends AppCompatActivity implements View.OnClickListener {
 

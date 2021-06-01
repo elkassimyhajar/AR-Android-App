@@ -2,15 +2,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.myclassroomproject">
 
-    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Permissions -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.CAMERA" />
 
+    <!-- Camera AR Feature -->
     <uses-feature
         android:name="android.hardware.camera.ar"
-        android:required="true" />
-    <uses-feature
-        android:glEsVersion="0x00030000"
-        android:required="true" />
+        android:required="false"/>
 
     <application
         android:allowBackup="true"
@@ -20,25 +20,40 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyClassroomProject"
         android:usesCleartextTraffic="true">
-        <activity android:name=".WordGameTemplateActivity"></activity>
-        <activity android:name=".EndWordFillActivity" />
-        <activity android:name=".WordFillActivity" />
-        <activity android:name=".LessonTemplateActivity" />
-        <activity android:name=".LessonflipperActivity" />
-        <activity android:name=".ArActivity" />
-        <activity android:name=".IntermediateDashboard" />
-        <activity android:name=".DashboardActivity" />
+
+        <!-- "AR Optional" app, contains non-AR features that can be used when "Google Play Services for AR" (ARCore) is not available. -->
+        <meta-data
+            android:name="com.google.ar.core"
+            android:value="optional" />
+
+        <!-- -->
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".IntermediateDashboard" />
+        <activity android:name=".DashboardActivity" />
 
-        <meta-data
-            android:name="com.google.ar.core"
-            android:value="required" />
+        <!-- Activities of the lessons part -->
+        <activity android:name=".LessonTemplateActivity" />
+        <activity android:name=".LessonflipperActivity" />
+        <activity android:name=".ArActivity" />
+
+        <!-- Activities of the practice part -->
+        <activity android:name=".WordGameTemplateActivity" />
+        <activity android:name=".EndWordFillActivity" />
+        <activity android:name=".WordFillActivity" />
+
+        <!-- Activities of the first game -->
+
+        <!-- Activities of the second game -->
+        <activity android:name="com.example.match_it.activities.LoadingActivity"/>
+        <activity android:name="com.example.match_it.activities.LevelsActivity"/>
+        <activity android:name="com.example.match_it.activities.GameActivity"/>
+
+
     </application>
 
 </manifest>
