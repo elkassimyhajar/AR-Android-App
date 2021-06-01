@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    tools:context=".ThirdLevelActivity"
+    tools:context="com.example.androidproject.ThirdLevelActivity"
     android:orientation="vertical"
     android:weightSum="10"
     android:background="@drawable/level_three">
