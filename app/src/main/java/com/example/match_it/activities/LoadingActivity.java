@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.match_it.R;
+import com.google.ar.core.ArCoreApk;
 
 import java.util.Objects;
 
@@ -52,6 +54,8 @@ public class LoadingActivity extends Activity {
         Intent intent = new Intent(LoadingActivity.this, LevelsActivity.class);
         intent.putExtra("topic", selectedTopic);
 
+        //checkSystemSupport(this);
+
         // show game name letter by letter
         // then, start GameActivity
         thread = new Thread() {
@@ -64,8 +68,6 @@ public class LoadingActivity extends Activity {
                         Thread.sleep(250);
                         runOnUiThread(() -> {
                             textView.setText(gameName.substring(0, i));
-                            if(!checkSystemSupport(LoadingActivity.this))
-                                finish();
                         });
                     }
                     Thread.sleep(250);
@@ -97,22 +99,15 @@ public class LoadingActivity extends Activity {
         finish();
     }
 
-    private static boolean checkSystemSupport(Activity activity) {
-        // checking whether the API version of the running Android >= 24
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            String openGlVersion = ((ActivityManager) Objects.requireNonNull(activity.getSystemService(Context.ACTIVITY_SERVICE))).getDeviceConfigurationInfo().getGlEsVersion();
-            // checking whether the OpenGL version >= 3.0
-            if (Double.parseDouble(openGlVersion) >= 3.0) {
-                return true;
-            } else {
-                Toast.makeText(activity, "App needs OpenGl Version 3.0 or later", Toast.LENGTH_LONG).show();
-                activity.finish();
-                return false;
-            }
-        } else {
-            Toast.makeText(activity, "App does not support required Build Version", Toast.LENGTH_LONG).show();
-            activity.finish();
-            return false;
+    /*private void checkSystemSupport(Activity activity) {
+        final ArCoreApk.Availability availability = ArCoreApk.getInstance().checkAvailability(activity);
+        if (availability.isTransient()) {
+            // re-query at 5Hz while we check compatibility.
+            new Handler().postDelayed(() -> checkSystemSupport(activity), 200);
         }
-    }
+        if(availability.isUnsupported()) {
+            Toast.makeText(activity, "This device is not supported.", Toast.LENGTH_LONG).show();
+            activity.finish();
+        }
+    }*/
 }
