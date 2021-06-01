@@ -10,7 +10,7 @@
         android:id="@+id/principe1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Look for a set of hidden objects indicate by name each time in a different location."
+        android:text="Look for a set of hidden objects indicated by their pictures each time in a different location."
         android:textSize="20sp"
         android:justificationMode="inter_word"
         android:layout_centerHorizontal="true"

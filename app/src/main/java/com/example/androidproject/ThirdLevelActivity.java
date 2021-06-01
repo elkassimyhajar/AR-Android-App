@@ -84,7 +84,7 @@ public class ThirdLevelActivity extends AppCompatActivity {
                     sound.start();
 
                     Toast toasty = Toasty.error(getApplicationContext(), "Time is over! Try again!", Toast.LENGTH_SHORT);
-                    toasty.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL, 0, 60);
+                    toasty.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL, 0, 0);
                     toasty.show();
 
                     btn_levels.setVisibility(View.VISIBLE);
