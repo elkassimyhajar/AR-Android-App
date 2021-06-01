@@ -159,8 +159,8 @@ public class GameActivity extends AppCompatActivity {
                     Intent intent = new Intent(GameActivity.this, GameActivity.class);
                     intent.putExtra("topic", selectedTopic);
                     intent.putExtra("level", level);
-                    startActivity(intent);
                     pauseDialog.dismiss();
+                    startActivity(intent);
                     finish();
                 }
         );
