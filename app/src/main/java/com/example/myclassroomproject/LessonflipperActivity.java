@@ -37,20 +37,30 @@ public class LessonflipperActivity extends AppCompatActivity {
         String theme = getIntent().getStringExtra("theme");
 
         if (theme.equals("numbers")){
-
+            lessons.add(new Lesson(R.drawable.a, "A  a", R.raw.a, "A.gltf"));
+            lessons.add(new Lesson(R.drawable.b, "B  b", R.raw.b, "B.gltf"));
+            lessons.add(new Lesson(R.drawable.c, "C  c", R.raw.c, "C.gltf"));
         }else if (theme.equals("alphabet")){
             lessons.add(new Lesson(R.drawable.a, "A  a", R.raw.a, "A.gltf"));
             lessons.add(new Lesson(R.drawable.b, "B  b", R.raw.b, "B.gltf"));
             lessons.add(new Lesson(R.drawable.c, "C  c", R.raw.c, "C.gltf"));
             lessons.add(new Lesson(R.drawable.d, "D  d", R.raw.d, "D.gltf"));
         }else if (theme.equals("fruits")){
-
+            lessons.add(new Lesson(R.drawable.a, "A  a", R.raw.a, "A.gltf"));
+            lessons.add(new Lesson(R.drawable.b, "B  b", R.raw.b, "B.gltf"));
+            lessons.add(new Lesson(R.drawable.c, "C  c", R.raw.c, "C.gltf"));
         }else if (theme.equals("veggies")){
-
+            lessons.add(new Lesson(R.drawable.a, "A  a", R.raw.a, "A.gltf"));
+            lessons.add(new Lesson(R.drawable.b, "B  b", R.raw.b, "B.gltf"));
+            lessons.add(new Lesson(R.drawable.c, "C  c", R.raw.c, "C.gltf"));
         }else if (theme.equals("shapes")){
-
+            lessons.add(new Lesson(R.drawable.one, "One", R.raw.a, "one.gltf"));
+            lessons.add(new Lesson(R.drawable.b, "Two", R.raw.b, "two.gltf"));
+            lessons.add(new Lesson(R.drawable.c, "Three", R.raw.c, "three.gltf"));
         }else if (theme.equals("animals")){
-
+            lessons.add(new Lesson(R.drawable.a, "A  a", R.raw.a, "A.gltf"));
+            lessons.add(new Lesson(R.drawable.b, "B  b", R.raw.b, "B.gltf"));
+            lessons.add(new Lesson(R.drawable.c, "C  c", R.raw.c, "C.gltf"));
         }
 
         flipper = (ViewFlipper) findViewById(R.id.flipper);

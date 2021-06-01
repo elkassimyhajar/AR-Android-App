@@ -3,8 +3,15 @@ package com.example.myclassroomproject;
 public class Lesson {
 
     private int image;
+    private String[] nameShuffled;
     private String name, arPath;
     private int sound;
+
+    public Lesson(int image, String name, String[] nameShuffled){
+        this.image = image;
+        this.name = name;
+        this.nameShuffled = nameShuffled;
+    }
 
     public Lesson(int image, String name, int sound, String arPath){
         this.image = image;
@@ -43,5 +50,13 @@ public class Lesson {
 
     public void setArPath(String arPath) {
         this.arPath = arPath;
+    }
+
+    public String[] getNameShuffled() {
+        return nameShuffled;
+    }
+
+    public void setNameShuffled(String[] nameShuffled) {
+        this.nameShuffled = nameShuffled;
     }
 }

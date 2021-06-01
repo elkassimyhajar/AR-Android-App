@@ -31,6 +31,8 @@ public class IntermediateDashboard extends AppCompatActivity implements View.OnC
         practice = (CardView) findViewById(R.id.practice);
 
         learn.setOnClickListener(this);
+        practice.setOnClickListener(this);
+        play.setOnClickListener(this);
 
         lessons = new ArrayList<>();
 
@@ -75,16 +77,18 @@ public class IntermediateDashboard extends AppCompatActivity implements View.OnC
 
     @Override
     public void onClick(View v) {
-
+        Intent i;
         switch (v.getId()){
             case R.id.learn:
-                Intent i = new Intent(this, LessonflipperActivity.class);
+                i = new Intent(this, LessonflipperActivity.class);
                 i.putExtra("theme", theme);
                 startActivity(i);
                 break;
             case R.id.play:
                 break;
             case R.id.practice:
+                i = new Intent(this, WordFillActivity.class);
+                startActivity(i);
                 break;
         }
     }
