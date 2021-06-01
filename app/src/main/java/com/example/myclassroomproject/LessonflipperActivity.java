@@ -16,7 +16,7 @@ import androidx.cardview.widget.CardView;
 import java.util.ArrayList;
 
 public class LessonflipperActivity extends AppCompatActivity {
-    private final String path = "https://raw.githubusercontent.com/elkassimyhajar/AR-Android-App/meryem/app/sampledata/";
+    private final String path = "https://github.com/elkassimyhajar/3D-Gltf-Samples/raw/main/Samples/";
     String arPath;
     CardView prev, next, audio, ar;
     ViewFlipper flipper;
@@ -36,30 +36,24 @@ public class LessonflipperActivity extends AppCompatActivity {
         String theme = getIntent().getStringExtra("theme");
 
         if (theme.equals("numbers")){
-            lessons.add(new Lesson(R.drawable.a, "A  a", R.raw.a, "A.gltf"));
-            lessons.add(new Lesson(R.drawable.b, "B  b", R.raw.b, "B.gltf"));
-            lessons.add(new Lesson(R.drawable.c, "C  c", R.raw.c, "C.gltf"));
+            lessons.add(new Lesson(R.drawable.one, "One", R.raw.one, "one.gltf"));
+            lessons.add(new Lesson(R.drawable.three, "Three", R.raw.three, "three.gltf"));
         }else if (theme.equals("alphabet")){
-            lessons.add(new Lesson(R.drawable.a, "A  a", R.raw.a, "A.gltf"));
-            lessons.add(new Lesson(R.drawable.b, "B  b", R.raw.b, "B.gltf"));
-            lessons.add(new Lesson(R.drawable.c, "C  c", R.raw.c, "C.gltf"));
-            lessons.add(new Lesson(R.drawable.d, "D  d", R.raw.d, "D.gltf"));
+            lessons.add(new Lesson(R.drawable.a, "A  a", R.raw.a, "letterA.gltf"));
+            lessons.add(new Lesson(R.drawable.b, "B  b", R.raw.b, "letterB.gltf"));
+            lessons.add(new Lesson(R.drawable.c, "C  c", R.raw.c, "letterC.gltf"));
+            lessons.add(new Lesson(R.drawable.d, "D  d", R.raw.d, "letterD.gltf"));
         }else if (theme.equals("fruits")){
-            lessons.add(new Lesson(R.drawable.a, "A  a", R.raw.a, "A.gltf"));
-            lessons.add(new Lesson(R.drawable.b, "B  b", R.raw.b, "B.gltf"));
-            lessons.add(new Lesson(R.drawable.c, "C  c", R.raw.c, "C.gltf"));
+            lessons.add(new Lesson(R.drawable.apple, "Apple", R.raw.apple, "apple.gltf"));
+            lessons.add(new Lesson(R.drawable.banana, "Banana", R.raw.banana, "banana.gltf"));
         }else if (theme.equals("veggies")){
-            lessons.add(new Lesson(R.drawable.a, "A  a", R.raw.a, "A.gltf"));
-            lessons.add(new Lesson(R.drawable.b, "B  b", R.raw.b, "B.gltf"));
-            lessons.add(new Lesson(R.drawable.c, "C  c", R.raw.c, "C.gltf"));
+
         }else if (theme.equals("shapes")){
-            lessons.add(new Lesson(R.drawable.one, "One", R.raw.a, "one.gltf"));
-            lessons.add(new Lesson(R.drawable.b, "Two", R.raw.b, "two.gltf"));
-            lessons.add(new Lesson(R.drawable.c, "Three", R.raw.c, "three.gltf"));
+            lessons.add(new Lesson(R.drawable.square, "Square", R.raw.square, "square_red.gltf"));
+            lessons.add(new Lesson(R.drawable.circle, "Circle", R.raw.circle, "circle_blue.gltf"));
+            lessons.add(new Lesson(R.drawable.triangle, "Triangle", R.raw.triangle, "triangle_yellow.gltf"));
         }else if (theme.equals("animals")){
-            lessons.add(new Lesson(R.drawable.a, "A  a", R.raw.a, "A.gltf"));
-            lessons.add(new Lesson(R.drawable.b, "B  b", R.raw.b, "B.gltf"));
-            lessons.add(new Lesson(R.drawable.c, "C  c", R.raw.c, "C.gltf"));
+            lessons.add(new Lesson(R.drawable.fox, "Fox", R.raw.fox, "Fox.gltf"));
         }
 
         flipper = (ViewFlipper) findViewById(R.id.flipper);

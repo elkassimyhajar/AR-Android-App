@@ -13,7 +13,7 @@
     <ImageView
         android:layout_gravity="center"
         android:layout_marginTop="-30dp"
-        android:src="@drawable/logo_black"
+        android:src="@drawable/kid_writes"
         android:layout_width="280dp"
         android:layout_height="180dp" />
 
