@@ -20,7 +20,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyClassroomProject"
         android:usesCleartextTraffic="true">
-        <activity android:name=".WordFillActivity"></activity>
+        <activity android:name=".WordGameTemplateActivity"></activity>
+        <activity android:name=".EndWordFillActivity" />
+        <activity android:name=".WordFillActivity" />
         <activity android:name=".LessonTemplateActivity" />
         <activity android:name=".LessonflipperActivity" />
         <activity android:name=".ArActivity" />
